@@ -1,0 +1,8 @@
+category: Devel Graphics
+requires: cygwin atk expat gdk-pixbuf2 glib2 gtk2-x11 libX11_6 libXaw8 libXmu6 libXt6 libcairo2 libfontconfig1 libfreetype26 libguile17 libiconv2 libintl8 libjpeg62 libltdl3 libpng12 lua51 pango perl python ruby zlib
+sdesc: "Graph visualization tools"
+ldesc: "The Graphviz layout programs take descriptions of graphs in a
+simple text language, and make diagrams in several useful formats such
+as images and SVG for web pages, Postscript for inclusion in PDF or
+other documents; or display in an interactive graph browser. (Graphviz
+also supports GXL, an XML dialect.)"
