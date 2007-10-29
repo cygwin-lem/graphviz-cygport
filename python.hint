@@ -1,0 +1,9 @@
+category: Devel Doc Graphics Python
+requires: cygwin libgraphviz4 python
+external-source: graphviz
+sdesc: "Graph visualization tools (Python bindings)"
+ldesc: "The Graphviz layout programs take descriptions of graphs in a
+simple text language, and make diagrams in several useful formats such
+as images and SVG for web pages, Postscript for inclusion in PDF or
+other documents; or display in an interactive graph browser. (Graphviz
+also supports GXL, an XML dialect.)"

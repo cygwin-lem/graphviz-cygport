@@ -1,0 +1,306 @@
+graphviz
+------------------------------------------
+The Graphviz layout programs take descriptions of graphs in a simple
+text language, and make diagrams in several useful formats such as
+images and SVG for web pages, Postscript for inclusion in PDF or other
+documents; or display in an interactive graph browser. (Graphviz also
+supports GXL, an XML dialect.) 
+
+Runtime requirements:
+  cygwin-1.5.24-2
+  atk-1.18.0-1
+  gdk-pixbuf2-2.10.14-1
+  glib2-2.12.13-1
+  gtk2-x11-2.10.14-1
+  libX11_6-1.1.3-1
+  libXaw8-1.0.4-1
+  libXmu6-1.0.3-1
+  libXt6-1.0.5-1
+  libcairo2-1.4.10-1
+  libexpat0-1.95.8-1
+  libfontconfig1-2.3.2-2
+  libgd2-2.0.35-1
+  libintl8-0.15-1
+  libltdl3-1.5.23a-2
+  pango-1.16.5-1
+  zlib-1.2.3-2
+(plus bindings for the following:)
+  libguile17-1.8.2-1
+  lua51-5.1.2-1
+  ocaml-3.09.3-1
+  perl-5.8.8-4
+  php-5.2.4-1
+  python-2.5.1-3
+  ruby-1.8.6-1
+  tcl-8.4.16-2
+  tk-8.4.16-2
+
+Build requirements:
+(besides corresponding -devel packages)
+  cygwin-1.5.24-2
+  autoconf2.5-2.61-1
+  automake1.10-1.10-1
+  binutils-20050817-1
+  cygport-0.3.6-1
+  fastjar-0.94-1
+  gawk-3.1.5-4
+  gcc-core-3.4.4-3
+  jikes-1.22-4
+  libtool1.5-1.5.23a-2
+  make-3.81-1
+  pkg-config-0.21-1
+  sed-4.1.5-2
+
+Canonical website:
+  http://www.graphviz.org/
+
+Canonical download:
+  http://www.graphviz.org/pub/graphviz/ARCHIVE/
+
+-------------------------------------------
+
+Build instructions:
+  unpack graphviz-2.12-X-src.tar.bz2
+    if you use setup to install this src package, it will be
+	 unpacked under /usr/src automatically
+  cd /usr/src
+  cygport ./graphviz-2.12-X.cygport all
+
+This will create:
+  /usr/src/graphviz-2.12-X-src.tar.bz2
+  /usr/src/graphviz-2.12-X.tar.bz2
+  /usr/src/libgraphviz-devel-2.12-X.tar.bz2
+  /usr/src/libgraphviz4-2.12-X.tar.bz2
+
+-------------------------------------------
+
+Files included in the binary packages:
+
+(graphviz)
+  /usr/bin/acyclic.exe
+  /usr/bin/bcomps.exe
+  /usr/bin/ccomps.exe
+  /usr/bin/circo
+  /usr/bin/dijkstra.exe
+  /usr/bin/dot.exe
+  /usr/bin/dot2gxl
+  /usr/bin/dotty
+  /usr/bin/fdp
+  /usr/bin/gc.exe
+  /usr/bin/gvcolor.exe
+  /usr/bin/gvpack.exe
+  /usr/bin/gvpr.exe
+  /usr/bin/gxl2dot.exe
+  /usr/bin/lefty.exe
+  /usr/bin/lneato
+  /usr/bin/neato
+  /usr/bin/nop.exe
+  /usr/bin/prune.exe
+  /usr/bin/sccmap.exe
+  /usr/bin/tred.exe
+  /usr/bin/twopi
+  /usr/bin/unflatten.exe
+  /usr/share/doc/Cygwin/graphviz-2.14.1.README
+  /usr/share/doc/graphviz-2.14.1/AUTHORS
+  /usr/share/doc/graphviz-2.14.1/COPYING
+  /usr/share/doc/graphviz-2.14.1/ChangeLog
+  /usr/share/doc/graphviz-2.14.1/INSTALL
+  /usr/share/doc/graphviz-2.14.1/NEWS
+  /usr/share/doc/graphviz-2.14.1/README
+  /usr/share/graphviz/demo/*
+  /usr/share/graphviz/doc/*
+  /usr/share/graphviz/graphs/*
+  /usr/share/graphviz/lefty/*
+  /usr/share/man/man1/acyclic.1.gz
+  /usr/share/man/man1/bcomps.1.gz
+  /usr/share/man/man1/ccomps.1.gz
+  /usr/share/man/man1/circo.1
+  /usr/share/man/man1/dijkstra.1.gz
+  /usr/share/man/man1/dot.1.gz
+  /usr/share/man/man1/dot2gxl.1
+  /usr/share/man/man1/dotty.1.gz
+  /usr/share/man/man1/fdp.1
+  /usr/share/man/man1/gc.1.gz
+  /usr/share/man/man1/gvcolor.1.gz
+  /usr/share/man/man1/gvpack.1.gz
+  /usr/share/man/man1/gvpr.1.gz
+  /usr/share/man/man1/gxl2dot.1.gz
+  /usr/share/man/man1/lefty.1.gz
+  /usr/share/man/man1/lneato.1.gz
+  /usr/share/man/man1/neato.1
+  /usr/share/man/man1/nop.1.gz
+  /usr/share/man/man1/prune.1.gz
+  /usr/share/man/man1/sccmap.1.gz
+  /usr/share/man/man1/tred.1.gz
+  /usr/share/man/man1/twopi.1
+  /usr/share/man/man1/unflatten.1.gz
+  /usr/share/man/man7/graphviz.7.gz
+
+(libgraphviz4)
+  /usr/bin/cygagraph-4.dll
+  /usr/bin/cygcdt-4.dll
+  /usr/bin/cygexpr-4.dll
+  /usr/bin/cyggraph-4.dll
+  /usr/bin/cyggvc-4.dll
+  /usr/bin/cygpathplan-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_core-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_dot_layout-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_gd-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_gtk-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_neato_layout-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_pango-4.dll
+  /usr/lib/graphviz-2.14/cyggvplugin_xlib-4.dll
+  /usr/lib/graphviz-2.14/libgvplugin_core.la
+  /usr/lib/graphviz-2.14/libgvplugin_dot_layout.la
+  /usr/lib/graphviz-2.14/libgvplugin_gd.la
+  /usr/lib/graphviz-2.14/libgvplugin_gtk.la
+  /usr/lib/graphviz-2.14/libgvplugin_neato_layout.la
+  /usr/lib/graphviz-2.14/libgvplugin_pango.la
+  /usr/lib/graphviz-2.14/libgvplugin_xlib.la
+  /usr/sbin/libgraphviz4-config-update.exe
+
+(libgraphviz-devel)
+  /usr/include/graphviz/agraph.h
+  /usr/include/graphviz/cdt.h
+  /usr/include/graphviz/color.h
+  /usr/include/graphviz/demand_loading.c
+  /usr/include/graphviz/dot_builtins.c
+  /usr/include/graphviz/geom.h
+  /usr/include/graphviz/graph.h
+  /usr/include/graphviz/gv.cpp
+  /usr/include/graphviz/gv.i
+  /usr/include/graphviz/gvc.h
+  /usr/include/graphviz/gvcext.h
+  /usr/include/graphviz/gvcjob.h
+  /usr/include/graphviz/gvcommon.h
+  /usr/include/graphviz/gvplugin.h
+  /usr/include/graphviz/gvplugin_device.h
+  /usr/include/graphviz/gvplugin_layout.h
+  /usr/include/graphviz/gvplugin_loadimage.h
+  /usr/include/graphviz/gvplugin_render.h
+  /usr/include/graphviz/gvplugin_textlayout.h
+  /usr/include/graphviz/no_demand_loading.c
+  /usr/include/graphviz/pack.h
+  /usr/include/graphviz/pathgeom.h
+  /usr/include/graphviz/textpara.h
+  /usr/include/graphviz/types.h
+  /usr/include/graphviz/usershape.h
+  /usr/lib/libagraph.dll.a
+  /usr/lib/libagraph.la
+  /usr/lib/libcdt.dll.a
+  /usr/lib/libcdt.la
+  /usr/lib/libexpr.dll.a
+  /usr/lib/libexpr.la
+  /usr/lib/libgraph.dll.a
+  /usr/lib/libgraph.la
+  /usr/lib/libgvc.dll.a
+  /usr/lib/libgvc.la
+  /usr/lib/libgvc_builtins.a
+  /usr/lib/libgvc_builtins.la
+  /usr/lib/libpathplan.dll.a
+  /usr/lib/libpathplan.la
+  /usr/lib/pkgconfig/libagraph.pc
+  /usr/lib/pkgconfig/libcdt.pc
+  /usr/lib/pkgconfig/libexpr.pc
+  /usr/lib/pkgconfig/libgraph.pc
+  /usr/lib/pkgconfig/libgvc.pc
+  /usr/lib/pkgconfig/libgvc_builtins.pc
+  /usr/lib/pkgconfig/libpathplan.pc
+  /usr/share/man/man3/agraph.3.gz
+  /usr/share/man/man3/cdt.3.gz
+  /usr/share/man/man3/expr.3.gz
+  /usr/share/man/man3/graph.3.gz
+  /usr/share/man/man3/gvc.3.gz
+  /usr/share/man/man3/pathplan.3.gz
+
+(graphviz-sharp)
+  /usr/bin/cyggv_sharp.dll
+  /usr/lib/mono/gv-sharp/gv-sharp.dll
+  /usr/lib/mono/gv-sharp/gv-sharp.dll.config
+  /usr/share/man/mann/gv_sharp.n.gz
+
+(guile-graphviz)
+  /usr/lib/cyggv_guile.dll
+  /usr/lib/libgv_guile.la
+  /usr/share/man/mann/gv_guile.n.gz
+
+(java-graphviz)
+  /usr/bin/cyggv_java.dll
+  /usr/share/java/graphviz.jar
+  /usr/share/man/mann/gv_java.n.gz
+
+(lua51-graphviz)
+  /usr/lib/lua/5.1/cyggv_lua.dll
+  /usr/lib/lua/5.1/gv.dll
+  /usr/lib/lua/5.1/libgv_lua.la
+  /usr/share/man/mann/gv_lua.n.gz
+
+(ocaml-graphviz)
+  /usr/lib/ocaml/graphviz/cyggv_ocaml.dll
+  /usr/lib/ocaml/graphviz/gv.ml
+  /usr/lib/ocaml/graphviz/gv.mli
+  /usr/lib/ocaml/graphviz/libgv_ocaml.la
+  /usr/lib/ocaml/stublibs/dllgv.so
+  /usr/share/man/mann/gv_ocaml.n.gz
+
+(perl-graphviz)
+  /usr/lib/perl5/vendor_perl/5.8/cygwin/cyggv_perl.dll
+  /usr/lib/perl5/vendor_perl/5.8/cygwin/gv.dll
+  /usr/lib/perl5/vendor_perl/5.8/cygwin/gv.pm
+  /usr/lib/perl5/vendor_perl/5.8/cygwin/libgv_perl.la
+  /usr/share/man/mann/gv_perl.n.gz
+
+(php-graphviz)
+  /etc/php5/conf.d/graphviz.ini
+  /usr/lib/php/20060613/cyggv_php.dll
+  /usr/share/man/mann/gv_php.n.gz
+
+(python-graphviz)
+  /usr/lib/python2.5/site-packages/_gv.dll
+  /usr/lib/python2.5/site-packages/cyggv_python.dll
+  /usr/lib/python2.5/site-packages/gv.py
+  /usr/lib/python2.5/site-packages/libgv_python.la
+  /usr/share/man/mann/gv_python.n.gz
+
+(ruby-graphviz)
+  /usr/lib/ruby/site_ruby/1.8/i386-cygwin/cyggv_ruby.so
+  /usr/lib/ruby/site_ruby/1.8/i386-cygwin/gv.so
+  /usr/lib/ruby/site_ruby/1.8/i386-cygwin/libgv_ruby.la
+  /usr/share/man/mann/gv_ruby.n.gz
+
+(tcl-graphviz)
+  /usr/lib/graphviz-2.14/pkgIndex.tcl
+  /usr/lib/graphviz-2.14/tcl/cyggdtclft.dll
+  /usr/lib/graphviz-2.14/tcl/cyggv_tcl.dll
+  /usr/lib/graphviz-2.14/tcl/cygtcldot.dll
+  /usr/lib/graphviz-2.14/tcl/cygtcldot_builtin.dll
+  /usr/lib/graphviz-2.14/tcl/cygtclplan.dll
+  /usr/lib/graphviz-2.14/tcl/cygtkspline.dll
+  /usr/lib/graphviz-2.14/tcl/gv.dll
+  /usr/lib/graphviz-2.14/tcl/libgdtclft.la
+  /usr/lib/graphviz-2.14/tcl/libgv_tcl.la
+  /usr/lib/graphviz-2.14/tcl/libtcldot.la
+  /usr/lib/graphviz-2.14/tcl/libtcldot_builtin.la
+  /usr/lib/graphviz-2.14/tcl/libtclplan.la
+  /usr/lib/graphviz-2.14/tcl/libtkspline.la
+  /usr/share/man/mann/gdtclft.n.gz
+  /usr/share/man/mann/gv_tcl.n.gz
+  /usr/share/man/mann/tcldot.n.gz
+  /usr/share/man/mann/tkspline.n.gz
+
+------------------
+
+Port Notes:
+
+----- version 2.14.1-1 -----
+ABI version bump.
+Separated library and devel packages, based on Debian packaging.
+Added PHP, Java, and Tcl bindings.
+Installed all bindings into standard locations as separate packages.
+
+----- version 2.12-1 -----
+Initial release for Cygwin.
+
+
+Cygwin port maintained by:
+http://cygwinports.dotsrc.org/

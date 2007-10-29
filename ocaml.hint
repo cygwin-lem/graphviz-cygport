@@ -1,0 +1,9 @@
+category: Devel Doc Graphics OCaml
+requires: cygwin libgraphviz4 ocaml
+external-source: graphviz
+sdesc: "Graph visualization tools (OCaml bindings)"
+ldesc: "The Graphviz layout programs take descriptions of graphs in a
+simple text language, and make diagrams in several useful formats such
+as images and SVG for web pages, Postscript for inclusion in PDF or
+other documents; or display in an interactive graph browser. (Graphviz
+also supports GXL, an XML dialect.)"
