@@ -8,28 +8,31 @@ supports GXL, an XML dialect.)
 
 Runtime requirements:
   cygwin-1.5.24-2
-  atk-1.18.0-1
-  gdk-pixbuf2-2.10.14-1
-  glib2-2.12.13-1
-  gtk2-x11-2.10.14-1
+  atk-1.20.0-1
+  gdk-pixbuf2-2.12.2-1
+  glib2-2.14.4-1
+  gtk2-x11-2.12.2-1
+  libIL1-1.6.8_rc2-1
+  libILU1-1.6.8_rc2-1
   libX11_6-1.1.3-1
   libXaw8-1.0.4-1
   libXmu6-1.0.3-1
   libXt6-1.0.5-1
-  libcairo2-1.4.10-1
+  libcairo2-1.4.12-1
   libexpat0-1.95.8-1
   libfontconfig1-2.3.2-2
   libgd2-2.0.35-1
   libintl8-0.15-1
   libltdl3-1.5.23a-2
-  pango-1.16.5-1
+  libming0-0.4.0.beta5-1
+  pango-1.18.3-1
   zlib-1.2.3-2
 (plus bindings for the following:)
   libguile17-1.8.2-1
   lua51-5.1.2-1
   ocaml-3.09.3-1
   perl-5.8.8-4
-  php-5.2.4-1
+  php-5.2.5-1
   python-2.5.1-3
   ruby-1.8.6-1
   tcl-8.4.16-2
@@ -41,7 +44,7 @@ Build requirements:
   autoconf2.5-2.61-1
   automake1.10-1.10-1
   binutils-20050817-1
-  cygport-0.3.6-1
+  cygport-0.3.7-1
   fastjar-0.94-1
   gawk-3.1.5-4
   gcc-core-3.4.4-3
@@ -60,17 +63,28 @@ Canonical download:
 -------------------------------------------
 
 Build instructions:
-  unpack graphviz-2.12-X-src.tar.bz2
+  unpack graphviz-2.16.1-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./graphviz-2.12-X.cygport all
+  cygport ./graphviz-2.16.1-X.cygport all
 
 This will create:
-  /usr/src/graphviz-2.12-X-src.tar.bz2
-  /usr/src/graphviz-2.12-X.tar.bz2
-  /usr/src/libgraphviz-devel-2.12-X.tar.bz2
-  /usr/src/libgraphviz4-2.12-X.tar.bz2
+  /usr/src/graphviz-2.16.1-X-src.tar.bz2
+  /usr/src/graphviz-2.16.1-X.tar.bz2
+  /usr/src/graphviz-doc-2.16.1-X.tar.bz2
+  /usr/src/graphviz-sharp-2.16.1-X.tar.bz2
+  /usr/src/libgraphviz-devel-2.16.1-X.tar.bz2
+  /usr/src/libgraphviz4-2.16.1-X.tar.bz2
+  /usr/src/guile-graphviz-2.16.1-X.tar.bz2
+  /usr/src/java-graphviz-2.16.1-X.tar.bz2
+  /usr/src/lua51-graphviz-2.16.1-X.tar.bz2
+  /usr/src/ocaml-graphviz-2.16.1-X.tar.bz2
+  /usr/src/perl-graphviz-2.16.1-X.tar.bz2
+  /usr/src/php-graphviz-2.16.1-X.tar.bz2
+  /usr/src/python-graphviz-2.16.1-X.tar.bz2
+  /usr/src/ruby-graphviz-2.16.1-X.tar.bz2
+  /usr/src/tcl-graphviz-2.16.1-X.tar.bz2
 
 -------------------------------------------
 
@@ -100,13 +114,13 @@ Files included in the binary packages:
   /usr/bin/tred.exe
   /usr/bin/twopi
   /usr/bin/unflatten.exe
-  /usr/share/doc/Cygwin/graphviz-2.14.1.README
-  /usr/share/doc/graphviz-2.14.1/AUTHORS
-  /usr/share/doc/graphviz-2.14.1/COPYING
-  /usr/share/doc/graphviz-2.14.1/ChangeLog
-  /usr/share/doc/graphviz-2.14.1/INSTALL
-  /usr/share/doc/graphviz-2.14.1/NEWS
-  /usr/share/doc/graphviz-2.14.1/README
+  /usr/share/doc/Cygwin/graphviz-2.16.1.README
+  /usr/share/doc/graphviz-2.16.1/AUTHORS
+  /usr/share/doc/graphviz-2.16.1/COPYING
+  /usr/share/doc/graphviz-2.16.1/ChangeLog
+  /usr/share/doc/graphviz-2.16.1/INSTALL
+  /usr/share/doc/graphviz-2.16.1/NEWS
+  /usr/share/doc/graphviz-2.16.1/README
   /usr/share/graphviz/demo/*
   /usr/share/graphviz/doc/*
   /usr/share/graphviz/graphs/*
@@ -143,20 +157,28 @@ Files included in the binary packages:
   /usr/bin/cyggraph-4.dll
   /usr/bin/cyggvc-4.dll
   /usr/bin/cygpathplan-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_core-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_dot_layout-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_gd-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_gtk-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_neato_layout-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_pango-4.dll
-  /usr/lib/graphviz-2.14/cyggvplugin_xlib-4.dll
-  /usr/lib/graphviz-2.14/libgvplugin_core.la
-  /usr/lib/graphviz-2.14/libgvplugin_dot_layout.la
-  /usr/lib/graphviz-2.14/libgvplugin_gd.la
-  /usr/lib/graphviz-2.14/libgvplugin_gtk.la
-  /usr/lib/graphviz-2.14/libgvplugin_neato_layout.la
-  /usr/lib/graphviz-2.14/libgvplugin_pango.la
-  /usr/lib/graphviz-2.14/libgvplugin_xlib.la
+  /usr/lib/graphviz-2.16/Bitstream_Vera_Sans.fdb
+  /usr/lib/graphviz-2.16/Bitstream_Vera_Serif.fdb
+  /usr/lib/graphviz-2.16/cyggvplugin_core-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_devil-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_dot_layout-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_gd-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_gdk_pixbuf-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_gtk-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_ming-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_neato_layout-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_pango-5.dll
+  /usr/lib/graphviz-2.16/cyggvplugin_xlib-5.dll
+  /usr/lib/graphviz-2.16/libgvplugin_core.la
+  /usr/lib/graphviz-2.16/libgvplugin_devil.la
+  /usr/lib/graphviz-2.16/libgvplugin_dot_layout.la
+  /usr/lib/graphviz-2.16/libgvplugin_gd.la
+  /usr/lib/graphviz-2.16/libgvplugin_gdk_pixbuf.la
+  /usr/lib/graphviz-2.16/libgvplugin_gtk.la
+  /usr/lib/graphviz-2.16/libgvplugin_ming.la
+  /usr/lib/graphviz-2.16/libgvplugin_neato_layout.la
+  /usr/lib/graphviz-2.16/libgvplugin_pango.la
+  /usr/lib/graphviz-2.16/libgvplugin_xlib.la
   /usr/sbin/libgraphviz4-config-update.exe
 
 (libgraphviz-devel)
@@ -269,20 +291,20 @@ Files included in the binary packages:
   /usr/share/man/mann/gv_ruby.n.gz
 
 (tcl-graphviz)
-  /usr/lib/graphviz-2.14/pkgIndex.tcl
-  /usr/lib/graphviz-2.14/tcl/cyggdtclft.dll
-  /usr/lib/graphviz-2.14/tcl/cyggv_tcl.dll
-  /usr/lib/graphviz-2.14/tcl/cygtcldot.dll
-  /usr/lib/graphviz-2.14/tcl/cygtcldot_builtin.dll
-  /usr/lib/graphviz-2.14/tcl/cygtclplan.dll
-  /usr/lib/graphviz-2.14/tcl/cygtkspline.dll
-  /usr/lib/graphviz-2.14/tcl/gv.dll
-  /usr/lib/graphviz-2.14/tcl/libgdtclft.la
-  /usr/lib/graphviz-2.14/tcl/libgv_tcl.la
-  /usr/lib/graphviz-2.14/tcl/libtcldot.la
-  /usr/lib/graphviz-2.14/tcl/libtcldot_builtin.la
-  /usr/lib/graphviz-2.14/tcl/libtclplan.la
-  /usr/lib/graphviz-2.14/tcl/libtkspline.la
+  /usr/lib/graphviz-2.16/pkgIndex.tcl
+  /usr/lib/graphviz-2.16/tcl/cyggdtclft.dll
+  /usr/lib/graphviz-2.16/tcl/cyggv_tcl.dll
+  /usr/lib/graphviz-2.16/tcl/cygtcldot.dll
+  /usr/lib/graphviz-2.16/tcl/cygtcldot_builtin.dll
+  /usr/lib/graphviz-2.16/tcl/cygtclplan.dll
+  /usr/lib/graphviz-2.16/tcl/cygtkspline.dll
+  /usr/lib/graphviz-2.16/tcl/gv.dll
+  /usr/lib/graphviz-2.16/tcl/libgdtclft.la
+  /usr/lib/graphviz-2.16/tcl/libgv_tcl.la
+  /usr/lib/graphviz-2.16/tcl/libtcldot.la
+  /usr/lib/graphviz-2.16/tcl/libtcldot_builtin.la
+  /usr/lib/graphviz-2.16/tcl/libtclplan.la
+  /usr/lib/graphviz-2.16/tcl/libtkspline.la
   /usr/share/man/mann/gdtclft.n.gz
   /usr/share/man/mann/gv_tcl.n.gz
   /usr/share/man/mann/tcldot.n.gz
@@ -291,6 +313,9 @@ Files included in the binary packages:
 ------------------
 
 Port Notes:
+
+----- version 2.16.1-1 -----
+Version bump.  Added IL and Ming plugins.
 
 ----- version 2.14.1-1 -----
 ABI version bump.
