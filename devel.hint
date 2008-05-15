@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin expat libtool1.5
+requires: cygwin libexpat-devel libtool zlib
 external-source: graphviz
 sdesc: "Graph visualization tools (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

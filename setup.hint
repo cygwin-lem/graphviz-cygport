@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin libgraphviz4 libexpat0 libX11_6 libXaw8 libXmu6 libXt6
+requires: cygwin libgd2 libgraphviz4 libexpat1 libX11_6 libXaw8 libXmu6 libXt6
 sdesc: "Graph visualization tools (commands)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such

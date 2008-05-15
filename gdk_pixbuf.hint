@@ -1,7 +1,7 @@
-category: Devel Doc Graphics Lua
-requires: cygwin libgraphviz4 lua
+category: Devel Doc Graphics
+requires: cygwin libgraphviz4 gdk-pixbuf2
 external-source: graphviz
-sdesc: "Graph visualization tools (Lua bindings)"
+sdesc: "Graph visualization tools (GdkPixbuf plugin)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

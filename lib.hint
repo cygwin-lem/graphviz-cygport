@@ -1,7 +1,7 @@
 category: Devel Doc Graphics
-requires: cygwin libexpat0 libltdl3 atk gdk-pixbuf2 glib2 gtk2-x11 libIL1 libILU1 libX11_6 libcairo2 libfontconfig1 libgd2 libintl8 libming0 pango zlib
+requires: cygwin libexpat1 libgd2 libltdl7 zlib
 external-source: graphviz
-sdesc: "Graph visualization tools (runtime library)"
+sdesc: "Graph visualization tools (core runtime)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

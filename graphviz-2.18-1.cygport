@@ -1,0 +1,226 @@
+inherit java lua mono ocaml perl php python ruby tcl # R
+
+DESCRIPTION="GraphViz graph visualization tools"
+HOMEPAGE="http://www.graphviz.org/"
+SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
+
+gvlibdir="/usr/lib/${PN}-${PV_MAJ_MIN}"
+gvplugins="devil gdk_pixbuf gtk ming pango rsvg xlib"
+
+abi=4
+PKG_NAMES="${PN} lib${PN}${abi} lib${PN}-devel" # lib${PN}-doc"
+PKG_HINTS="setup lib devel" # doc"
+PKG_CONTENTS[0]="--exclude=*.dll usr/bin/ usr/share/doc/Cygwin/
+                 usr/share/doc/${P}/[A-Z]* usr/share/${PN}/
+                 usr/share/man/man1/ usr/share/man/man7/"
+PKG_CONTENTS[1]="--exclude=Bitstream_*.fdb"
+PKG_CONTENTS[2]="--exclude=*gv_guile* usr/include/ usr/lib/lib*
+                 usr/lib/pkgconfig/ usr/share/man/man3/"
+# PKG_CONTENTS[3]="usr/share/doc/${P}/html/"
+
+n=${#PKG_CONTENTS[*]}
+
+for plug in ${gvplugins}
+do
+	PKG_NAMES+=" lib${PN}${abi}-${plug}"
+	PKG_HINTS+=" ${plug}"
+	PKG_CONTENTS[1]+=" --exclude=*gvplugin_${plug}[-.]*"
+	case ${plug} in
+		ming) extra="${gvlibdir#/}/*.fdb" ;;
+		*) extra= ;;
+	esac
+	PKG_CONTENTS[$((n++))]="etc/postinstall/lib${PN}${abi}-${plug}.sh
+                            ${gvlibdir#/}/*gvplugin_${plug}* ${extra}"
+done
+
+PKG_CONTENTS[1]+=" --exclude=*tcl etc/postinstall/lib${PN}${abi}.sh etc/preremove/
+                   usr/bin/*-${abi}.dll ${gvlibdir#/}/ usr/sbin/"
+
+PKG_NAMES+=" guile-${PN}"
+PKG_HINTS+=" guile"
+PKG_CONTENTS[$((n++))]="usr/lib/*gv_guile* usr/share/man/mann/gv_guile*"
+
+PKG_NAMES+=" java-${PN}"
+PKG_HINTS+=" java"
+PKG_CONTENTS[$((n++))]="usr/bin/*gv_java* usr/share/java/ usr/share/man/mann/gv_java*"
+
+PKG_NAMES+=" lua-${PN}"
+PKG_HINTS+=" lua"
+PKG_CONTENTS[$((n++))]="${LUA_LIBDIR#/} usr/share/man/mann/gv_lua*"
+
+PKG_NAMES+=" ocaml-${PN}"
+PKG_HINTS+=" ocaml"
+PKG_CONTENTS[$((n++))]="${OCAML_LIBDIR#/} usr/share/man/mann/gv_ocaml*"
+
+PKG_NAMES+=" perl-${PN}"
+PKG_HINTS+=" perl"
+PKG_CONTENTS[$((n++))]="${PERL_VENDORARCH#/} usr/share/man/mann/gv_perl*"
+
+PKG_NAMES+=" php-${PN}"
+PKG_HINTS+=" php"
+PKG_CONTENTS[$((n++))]="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/mann/gv_php* ${PHP_PEAR_DIR#/}"
+
+PKG_NAMES+=" python-${PN}"
+PKG_HINTS+=" python"
+PKG_CONTENTS[$((n++))]="${PYTHON_SITELIB#/} usr/share/man/mann/gv_python*"
+
+# how is this supposed to be installed??
+#PKG_NAMES+=" R-${PN}"
+#PKG_HINTS+=" R"
+#PKG_CONTENTS[$((n++))]="${R_SITELIB#/} usr/share/man/mann/gv_R*"
+
+PKG_NAMES+=" ruby-${PN}"
+PKG_HINTS+=" ruby"
+PKG_CONTENTS[$((n++))]="${RUBY_SITEARCH#/} usr/share/man/mann/gv_ruby*"
+
+PKG_NAMES+=" ${PN}-sharp"
+PKG_HINTS+=" sharp"
+PKG_CONTENTS[$((n++))]="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/mann/gv_sharp*"
+
+PKG_NAMES+=" tcl-${PN}"
+PKG_HINTS+=" tcl"
+PKG_CONTENTS[$((n++))]="${TCL_LIBDIR#/} usr/share/man/mann/*tcl* usr/share/man/mann/tk*"
+unset n
+
+DIFF_EXCLUDES="Doxyfile libltdl"
+
+CYGCONF_ARGS="
+	--disable-static
+	--disable-rpath
+	--without-smyrna
+
+	--enable-guile
+	--enable-java
+	--enable-lua
+	--enable-ocaml
+	--enable-perl
+	--enable-php
+	--enable-python
+	--disable-r
+	--enable-ruby
+	--enable-sharp
+	--enable-tcl
+
+	--with-devil
+	--with-freetype2
+	--with-fontconfig
+	--with-gdk-pixbuf
+	--with-gtk
+	--with-libgd
+	--with-ming
+	--with-pangocairo
+	--with-rsvg
+	--with-x
+"
+
+pkgdirargs="
+	pkglibdir=${gvlibdir}
+	pkgguiledir=/usr/lib
+"
+
+src_compile() {
+	cd ${S}
+	cygautoreconf
+	cd ${B}
+	cygconf # CYGCONF_ARGS defined above
+	cygmake ${pkgdirargs}
+
+	cd ${B}/tclpkg/gv
+
+	# compile Mono assembly
+	${MCS} -target:library -out:gv-sharp.dll *.cs || error "mcs compile failed"
+
+	# compile Java jar
+	${JAVAC} *.java || error "${JAVAC} compile failed"
+	${JAR} cf gv.jar *.class || error "${JAR} failed"
+
+#	cd ${B}
+#	check_prog doxygen && cygmake -j1 doxygen
+}
+
+_reset_dir() {
+	for d
+	do
+		rm -fr ${D}${d}
+		dodir ${d}
+	done
+}
+
+src_install() {
+	cd ${B}
+	cyginstall ${pkgdirargs}
+	mv ${D}/usr/share/${PN}/icons/*.png ${D}/usr/share/${PN}/gui/
+
+	newsbin ${D}/usr/bin/dot.exe lib${PN}${abi}-config-update.exe
+
+	dodir /etc/postinstall /etc/preremove
+	echo "rm -f ${gvlibdir}/config" >> ${D}/etc/preremove/lib${PN}${abi}.sh
+	echo "/usr/sbin/lib${PN}${abi}-config-update -c" >> ${D}/etc/postinstall/lib${PN}${abi}.sh
+	for plug in ${gvplugins}
+	do
+		echo "/usr/sbin/lib${PN}${abi}-config-update -c" >> ${D}/etc/postinstall/lib${PN}${abi}-${plug}.sh
+	done
+
+	if [ -d doxygen/html ]
+	then
+		docinto html
+		dodoc doxygen/html/*
+	fi
+
+	cd ${D}${gvlibdir}
+
+	# Java bindings
+	mv java/cyggv_java.dll ${D}/usr/bin/
+	dojar ${B}/tclpkg/gv/gv.jar
+	rm -fr java/
+
+	# Lua bindings
+	_reset_dir ${LUA_LIBDIR}
+	mv lua/cyggv_lua.dll ${D}${LUA_LIBDIR}/gv.dll
+	rm -fr lua/
+
+	# OCaml bindings
+	_reset_dir ${OCAML_LIBDIR}/gv ${OCAML_LIBDIR}/stublibs
+	mv ocaml/cyggv_ocaml.dll ${D}${OCAML_LIBDIR}/stublibs/dllgv.so
+	echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
+	mv ocaml/META* ocaml/gv.{a,cma,cmi,cmxa,mli} ${D}${OCAML_LIBDIR}/gv/
+	rm -fr ocaml/
+
+	# Perl bindings
+	_reset_dir ${PERL_VENDORARCH}
+	mv perl/gv.pm ${D}${PERL_VENDORARCH}/
+	mv perl/cyggv_perl.dll ${D}${PERL_VENDORARCH}/gv.dll
+	rm -fr perl/
+	perl_postinst
+
+	# PHP bindings
+	_reset_dir ${PHP_EXTENSION_DIR} ${PHP_PEAR_DIR}
+	rm -fr ${D}/usr/lib/php/modules/ ${D}/usr/share/php/
+	mv php/cyggv_php.dll ${D}${PHP_EXTENSION_DIR}/gv.dll
+	mv php/gv.php ${D}${PHP_PEAR_DIR}/
+	rm -fr php/
+	php_postinst
+
+	# Python bindings
+	_reset_dir ${PYTHON_SITELIB}
+	mv python/cyggv_python.dll ${D}${PYTHON_SITELIB}/_gv.dll
+	mv python/gv.py ${D}${PYTHON_SITELIB}/
+	rm -fr python/
+	python_optimize
+
+	# Ruby bindings
+	_reset_dir ${RUBY_SITEARCH}
+	mv ruby/cyggv_ruby.* ${D}${RUBY_SITEARCH}/gv.so
+	rm -fr ruby/
+
+	# CSharp bindings
+	mv sharp/cyggv_sharp.dll ${D}/usr/bin/
+	exeinto /usr/lib/mono/gv-sharp
+	doexe ${B}/tclpkg/gv/gv-sharp.dll ${C}/gv-sharp.dll.config
+	rm -fr sharp/
+
+	# Tcl bindings
+	_reset_dir ${TCL_LIBDIR}/${P}
+	mv tcl/pkgIndex.tcl tcl/*.dll ${D}${TCL_LIBDIR}/${P}/
+	rm -fr tcl/
+}
