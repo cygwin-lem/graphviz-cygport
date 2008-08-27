@@ -1,0 +1,577 @@
+--- origsrc/graphviz-2.20.2/cmd/dotty/Makefile.am	2007-03-12 17:48:19.000000000 -0500
++++ src/graphviz-2.20.2/cmd/dotty/Makefile.am	2008-08-26 03:02:44.030594700 -0500
+@@ -9,7 +9,7 @@
+ 
+ man_MANS = $(man)
+ pdf_DATA = $(pdf)
+-if WITH_WIN32
++if OS_WIN32
+ bin_PROGRAMS = dotty
+ else
+ bin_SCRIPTS = dotty
+@@ -17,7 +17,7 @@
+ lefty_DATA = dotty.lefty dotty_draw.lefty dotty_edit.lefty \
+         dotty_layout.lefty dotty_ui.lefty
+ 
+-if WITH_WIN32
++if OS_WIN32
+ dotty_SOURCES = mswin32/dotty.c
+ dotty_LDADD = -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32
+ else
+--- origsrc/graphviz-2.20.2/cmd/gvpr/Makefile.am	2008-04-24 09:39:40.000000000 -0500
++++ src/graphviz-2.20.2/cmd/gvpr/Makefile.am	2008-08-26 03:02:44.030594700 -0500
+@@ -37,7 +37,7 @@
+ 
+ mkdefs_SOURCES = mkdefs.c
+ 
+-gdefs.h: $(top_srcdir)/cmd/gvpr/gprdata mkdefs
++gdefs.h: $(top_srcdir)/cmd/gvpr/gprdata mkdefs$(EXEEXT)
+ 	./mkdefs gdefs.h < $(top_srcdir)/cmd/gvpr/gprdata
+ 
+ .1.pdf:
+--- origsrc/graphviz-2.20.2/cmd/lefty/Makefile.am	2008-03-01 06:35:02.000000000 -0600
++++ src/graphviz-2.20.2/cmd/lefty/Makefile.am	2008-08-26 03:02:44.046219700 -0500
+@@ -25,7 +25,7 @@
+ leftydir = $(pkgdatadir)/lefty
+ pdfdir = $(pkgdatadir)/doc/pdf
+ 
+-if WITH_WIN32
++if OS_WIN32
+ AM_CPPFLAGS = \
+ 	-I$(top_srcdir)/cmd/lefty/ws/mswin32 \
+ 	-I$(top_srcdir)/cmd/lefty/os/mswin32 \
+@@ -55,7 +55,7 @@
+ pdf_DATA = $(pdf)
+ endif
+ endif
+-if WITH_WIN32
++if OS_WIN32
+ bin_PROGRAMS = lefty
+ man_MANS = $(man)
+ pdf_DATA = $(pdf)
+@@ -70,7 +70,7 @@
+ # NB. -lXaw must be before -lXt or strange inability-to-get-mouse-focus
+ # problems can occur on some systems.
+ #
+-if WITH_WIN32
++if OS_WIN32
+ lefty_LDADD = lefty.res $(top_builddir)/cmd/lefty/dot2l/libdot2l.la \
+ 	$(top_builddir)/cmd/lefty/ws/mswin32/libws.la \
+ 	$(top_builddir)/cmd/lefty/os/mswin32/libos.la \
+@@ -84,7 +84,7 @@
+ 	-lXt -lXmu -lXext -lX11 @SOCKET_LIBS@ @MATH_LIBS@
+ endif
+ 
+-if WITH_WIN32
++if OS_WIN32
+ if RC_IS_RC
+ lefty.res : ws/mswin32/lefty.rc
+ 	rc -l 0x409 -Iws/mswin32 '-IC:\\progra~1\\microsoft visual studio 8\\vc\\PlatformSDK\\include' -DNDEBUG -fo lefty.res ws/mswin32/lefty.rc
+--- origsrc/graphviz-2.20.2/cmd/lefty/dot2l/Makefile.am	2007-03-13 10:48:00.000000000 -0500
++++ src/graphviz-2.20.2/cmd/lefty/dot2l/Makefile.am	2008-08-26 03:02:44.061844700 -0500
+@@ -9,7 +9,7 @@
+ if WITH_X
+ noinst_LTLIBRARIES = libdot2l.la
+ endif
+-if WITH_WIN32
++if OS_WIN32
+ noinst_LTLIBRARIES = libdot2l.la
+ endif
+ 
+--- origsrc/graphviz-2.20.2/cmd/lefty/os/mswin32/Makefile.am	2007-03-13 13:52:22.000000000 -0500
++++ src/graphviz-2.20.2/cmd/lefty/os/mswin32/Makefile.am	2008-08-26 03:02:44.124344700 -0500
+@@ -3,7 +3,7 @@
+ 
+ AM_CPPFLAGS = -I$(top_srcdir)/cmd/lefty
+ 
+-if WITH_WIN32
++if OS_WIN32
+ noinst_LTLIBRARIES = libos.la
+ endif
+ 
+--- origsrc/graphviz-2.20.2/cmd/lefty/ws/mswin32/Makefile.am	2007-03-14 15:53:57.000000000 -0500
++++ src/graphviz-2.20.2/cmd/lefty/ws/mswin32/Makefile.am	2008-08-26 03:02:44.124344700 -0500
+@@ -4,7 +4,7 @@
+ AM_CPPFLAGS = -I$(top_srcdir)/cmd/lefty 
+ 
+ noinst_HEADERS = gcommon.h resource.h
+-if WITH_WIN32
++if OS_WIN32
+ noinst_LTLIBRARIES = libws.la
+ endif
+ 
+--- origsrc/graphviz-2.20.2/cmd/lneato/Makefile.am	2007-03-12 17:48:20.000000000 -0500
++++ src/graphviz-2.20.2/cmd/lneato/Makefile.am	2008-08-26 03:02:44.139969700 -0500
+@@ -8,14 +8,14 @@
+ 
+ man_MANS = $(man)
+ pdf_DATA = $(pdf)
+-if WITH_WIN32
++if OS_WIN32
+ bin_PROGRAMS = lneato
+ else
+ bin_SCRIPTS = lneato
+ endif
+ 
+ AM_CFLAGS = -DLNEATO
+-if WITH_WIN32
++if OS_WIN32
+ lneato_SOURCES = ${top_srcdir}/cmd/dotty/mswin32/dotty.c
+ lneato_LDADD = -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32
+ else
+--- origsrc/graphviz-2.20.2/cmd/smyrna/Makefile.am	2008-04-29 16:59:16.000000000 -0500
++++ src/graphviz-2.20.2/cmd/smyrna/Makefile.am	2008-08-26 03:02:44.155594700 -0500
+@@ -3,6 +3,7 @@
+         -I$(top_srcdir) \
+         -I$(top_srcdir)/lib/cgraph \
+         -I$(top_srcdir)/lib/cdt \
++        -I$(top_srcdir)/lib/gvc \
+         -I$(top_srcdir)/lib/glcomp \
+         -I$(top_srcdir)/lib/xdot \
+         -I$(top_srcdir)/lib/glcomp \
+--- origsrc/graphviz-2.20.2/cmd/tools/Makefile.am	2008-06-10 14:49:07.000000000 -0500
++++ src/graphviz-2.20.2/cmd/tools/Makefile.am	2008-08-26 03:02:44.249344700 -0500
+@@ -108,9 +108,9 @@
+ gvpack_SOURCES = gvpack.c gvpack_builtins.c
+ 
+ gvpack_LDADD = \
+-	$(top_builddir)/lib/gvc/libgvc.la \
+ 	$(top_builddir)/lib/ingraphs/libingraphs_C.la \
+-	$(top_builddir)/plugin/neato_layout/libgvplugin_neato_layout.la
++	$(top_builddir)/plugin/neato_layout/libgvplugin_neato_layout_C.la \
++	$(top_builddir)/lib/gvc/libgvc.la
+ 
+ dijkstra_SOURCES = dijkstra.c
+ 
+--- origsrc/graphviz-2.20.2/configure.ac	2008-06-25 18:17:56.000000000 -0500
++++ src/graphviz-2.20.2/configure.ac	2008-08-26 03:02:44.249344700 -0500
+@@ -126,10 +126,9 @@
+ 	;;
+   *cygwin* )
+ 	CYGWIN=yes
+-	DEFAULT_FONTPATH="C:/WINDOWS/FONTS;C:/WINNT/Fonts;C:/winnt/fonts"
+-	PATHSEPARATOR=";"
+-        NO_POSTSCRIPT_ALIAS=1
+-	AC_DEFINE(NO_POSTSCRIPT_ALIAS,1,[Alias PostScript font names to URW type 1 fonts])
++	DEFAULT_FONTPATH="/usr/share/fonts/Type1:/usr/share/fonts/TTF"
++	PATHSEPARATOR=":"
++        NO_POSTSCRIPT_ALIAS=0
+ 	;;
+   *mingw32* )
+ 	MINGW32=yes
+@@ -162,7 +161,8 @@
+ AC_DEFINE_UNQUOTED(DEFAULT_FONTPATH,"$DEFAULT_FONTPATH",[Path to TrueType fonts.])
+ AC_DEFINE_UNQUOTED(PATHSEPARATOR,"$PATHSEPARATOR",[Path separator character.])
+ AC_DEFINE_UNQUOTED(NO_POSTSCRIPT_ALIAS,$NO_POSTSCRIPT_ALIAS,[Postscript fontnames.])
+-AM_CONDITIONAL(WITH_WIN32, [test "x$UWIN" = "xyes" -o "x$CYGWIN" = "xyes" -o "x$MINGW32" = "xyes"])
++AM_CONDITIONAL(PLATFORM_WIN32, [test "x$UWIN" = "xyes" -o "x$CYGWIN" = "xyes" -o "x$MINGW32" = "xyes"])
++AM_CONDITIONAL(OS_WIN32, [test "x$UWIN" = "xyes" -o "x$MINGW32" = "xyes"])
+ AM_CONDITIONAL(WITH_DARWIN9, [test "x$DARWIN9" = "xyes"])
+ 
+ DEFAULT_DPI=96
+--- origsrc/graphviz-2.20.2/dot.demo/Makefile	2006-09-26 11:47:54.000000000 -0500
++++ src/graphviz-2.20.2/dot.demo/Makefile	2008-08-26 03:02:44.264969700 -0500
+@@ -1,5 +1,5 @@
+ CFLAGS=`pkg-config libgvc --cflags` -Wall -g -O2
+-LDFLAGS=`pkg-config libgvc --libs`
++LDADD=`pkg-config libgvc --libs` -lgraph
+ 
+ all: dot demo simple example neatopack
+ 
+@@ -11,3 +11,6 @@
+ 
+ clean:
+ 	rm -rf *.o dot demo simple example neatopack *.png
++
++%: %.o
++	$(CC) -o $@ $< $(LDADD)
+--- origsrc/graphviz-2.20.2/lib/common/Makefile.am	2007-09-04 18:39:07.000000000 -0500
++++ src/graphviz-2.20.2/lib/common/Makefile.am	2008-08-26 03:02:44.280594700 -0500
+@@ -10,7 +10,7 @@
+ 	-I$(top_srcdir)/lib/graph \
+ 	-I$(top_srcdir)/lib/cdt @GD_INCLUDES@ @EXPAT_INCLUDES@ @Z_INCLUDES@
+ 
+-if WITH_WIN32
++if OS_WIN32
+ AM_CFLAGS = -D_BLD_common=1
+ endif
+ 
+--- origsrc/graphviz-2.20.2/lib/expr/Makefile.am	2007-09-06 11:07:42.000000000 -0500
++++ src/graphviz-2.20.2/lib/expr/Makefile.am	2008-08-26 03:02:44.280594700 -0500
+@@ -30,6 +30,7 @@
+ 	exeval.c exexpr.c exlexname.c exopen.c exrewind.c extoken.c \
+ 	extype.c exzero.c exparse.y
+ libexpr_C_la_LIBADD = \
++	$(top_builddir)/lib/cdt/libcdt_C.la \
+ 	$(top_builddir)/lib/ast/libast_C.la \
+ 	$(top_builddir)/lib/vmalloc/libvmalloc_C.la \
+ 	$(top_builddir)/lib/sfio/libsfio_C.la
+--- origsrc/graphviz-2.20.2/lib/pack/Makefile.am	2007-07-26 08:53:25.000000000 -0500
++++ src/graphviz-2.20.2/lib/pack/Makefile.am	2008-08-26 03:02:44.343094700 -0500
+@@ -12,7 +12,7 @@
+ 	-I$(top_srcdir)/lib/graph \
+ 	-I$(top_srcdir)/lib/cdt
+ 
+-if WITH_WIN32
++if OS_WIN32
+ AM_CFLAGS = -D_BLD_common=1
+ endif
+ 
+--- origsrc/graphviz-2.20.2/lib/sfio/sfhdr.h	2008-04-23 12:16:28.000000000 -0500
++++ src/graphviz-2.20.2/lib/sfio/sfhdr.h	2008-08-26 03:02:44.343094700 -0500
+@@ -1074,7 +1074,7 @@
+ 
+ #if _lib_poll
+ #if _lib_poll_fd_1
+-    extern int poll _ARG_((struct pollfd *, ulong, int));
++    extern int poll _ARG_((struct pollfd *, uint, int));
+ #else
+     extern int poll _ARG_((ulong, struct pollfd *, int));
+ #endif
+--- origsrc/graphviz-2.20.2/plugin/core/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/core/Makefile.am	2008-08-26 03:02:44.358719700 -0500
+@@ -11,7 +11,7 @@
+ 	$(LIBGVC_CFLAGS)
+ 
+ noinst_LTLIBRARIES = libgvplugin_core_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_core.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_core.la
+@@ -34,9 +34,12 @@
+ 				$(top_builddir)/lib/graph/libgraph.la \
+ 				$(top_builddir)/lib/cdt/libcdt.la
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_core_la_LDFLAGS += -no-undefined
+ libgvplugin_core_la_LIBADD += $(top_builddir)/lib/graph/libgraph.la
++if !OS_WIN32
++libgvplugin_core_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/devil/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/devil/Makefile.am	2008-08-26 03:02:44.374344700 -0500
+@@ -12,7 +12,7 @@
+ 
+ if WITH_DEVIL
+ noinst_LTLIBRARIES = libgvplugin_devil_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_devil.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_devil.la
+@@ -27,8 +27,11 @@
+ libgvplugin_devil_la_SOURCES = $(libgvplugin_devil_C_la_SOURCES)
+ libgvplugin_devil_la_LIBADD = @DEVIL_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_devil_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_devil_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/dot_layout/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/dot_layout/Makefile.am	2008-08-26 03:02:44.389969700 -0500
+@@ -12,7 +12,7 @@
+ 
+ noinst_LTLIBRARIES = libgvplugin_dot_layout_C.la
+ 
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_dot_layout.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_dot_layout.la
+@@ -32,9 +32,12 @@
+ 	$(top_builddir)/lib/cdt/libcdt.la \
+ 	$(top_builddir)/lib/pathplan/libpathplan.la @MATH_LIBS@
+ 	
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_dot_layout_la_LDFLAGS += -no-undefined
+ libgvplugin_dot_layout_la_LIBADD += $(top_builddir)/lib/graph/libgraph.la
++if !OS_WIN32
++libgvplugin_dot_layout_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/gd/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/gd/Makefile.am	2008-08-26 02:59:09.530594700 -0500
+@@ -12,7 +12,7 @@
+ 
+ noinst_LTLIBRARIES = libgvplugin_gd_C.la
+ 
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_gd.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_gd.la
+@@ -43,9 +43,12 @@
+ 	$(top_builddir)/lib/cdt/libcdt.la @GD_LIBS@ @MATH_LIBS@
+ endif
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_gd_la_LDFLAGS += -no-undefined
+ libgvplugin_gd_la_LIBADD += $(top_builddir)/lib/graph/libgraph.la $(top_builddir)/lib/pathplan/libpathplan.la
++if !OS_WIN32
++libgvplugin_gd_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/gdk_pixbuf/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/gdk_pixbuf/Makefile.am	2008-08-26 03:02:44.468094700 -0500
+@@ -13,7 +13,7 @@
+ if WITH_PANGOCAIRO
+ if WITH_GDK_PIXBUF
+ noinst_LTLIBRARIES = libgvplugin_gdk_pixbuf_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_gdk_pixbuf.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_gdk_pixbuf.la
+@@ -30,8 +30,11 @@
+ libgvplugin_gdk_pixbuf_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @GDK_PIXBUF_LIBS@
+ 	
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_gdk_pixbuf_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_gdk_pixbuf_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/gdiplus/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/gdiplus/Makefile.am	2008-08-26 03:23:45.358719700 -0500
+@@ -14,11 +14,7 @@
+ 
+ if WITH_GDIPLUS
+ noinst_LTLIBRARIES = libgvplugin_gdiplus_C.la
+-if WITH_WIN32
+ lib_LTLIBRARIES = libgvplugin_gdiplus.la
+-else
+-pkglib_LTLIBRARIES = libgvplugin_gdiplus.la
+-endif
+ endif
+ 
+ noinst_HEADERS = FileStream.h gvplugin_gdiplus.h
+@@ -36,13 +32,7 @@
+ libgvplugin_gdiplus_la_SOURCES = $(libgvplugin_gdiplus_C_la_SOURCES)
+ libgvplugin_gdiplus_la_LIBADD = -lgdi32 -lole32 -lstdc++ -luuid $(top_builddir)/lib/gvc/libgvc.la
+ 
+-if WITH_WIN32
+ libgvplugin_gdiplus_la_LDFLAGS += -no-undefined
+-endif
+-
+-if WITH_DARWIN9
+-libgvplugin_gdiplus_la_LDFLAGS += -Wl,-exported_symbol,_gvplugin_gdiplus_LTX_library
+-endif
+ 
+ # object code is dependent on all the local GDI+ headers
+ 
+--- origsrc/graphviz-2.20.2/plugin/glitz/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/glitz/Makefile.am	2008-08-26 03:03:47.389969700 -0500
+@@ -13,7 +13,7 @@
+ if WITH_PANGOCAIRO
+ if WITH_GLITZ
+ noinst_LTLIBRARIES = libgvplugin_glitz_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_glitz.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_glitz.la
+@@ -29,8 +29,11 @@
+ libgvplugin_glitz_la_SOURCES = $(libgvplugin_glitz_C_la_SOURCES)
+ libgvplugin_glitz_la_LIBADD = @PANGOCAIRO_LIBS@ @GLITZ_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_glitz_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_glitz_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/gtk/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/gtk/Makefile.am	2008-08-26 03:02:44.483719700 -0500
+@@ -14,7 +14,7 @@
+ if WITH_GTK
+ noinst_HEADERS = support.h interface.h callbacks.h
+ noinst_LTLIBRARIES = libgvplugin_gtk_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_gtk.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_gtk.la
+@@ -33,8 +33,11 @@
+ libgvplugin_gtk_la_SOURCES = $(libgvplugin_gtk_C_la_SOURCES)
+ libgvplugin_gtk_la_LIBADD = $(GTK_LIBS) $(GNOMEUI_LIBS)
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_gtk_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_gtk_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/ming/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/ming/Makefile.am	2008-08-26 03:02:44.499344700 -0500
+@@ -12,7 +12,7 @@
+ 
+ if WITH_MING
+ noinst_LTLIBRARIES = libgvplugin_ming_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_ming.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_ming.la
+@@ -28,8 +28,12 @@
+ libgvplugin_ming_la_SOURCES = $(libgvplugin_ming_C_la_SOURCES)
+ libgvplugin_ming_la_LIBADD = @MING_LIBS@ @MATH_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_ming_la_LDFLAGS += -no-undefined
++libgvplugin_ming_la_LIBADD += $(top_builddir)/lib/gvc/libgvc.la
++if !OS_WIN32
++libgvplugin_ming_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/neato_layout/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/neato_layout/Makefile.am	2008-08-26 03:00:39.608719700 -0500
+@@ -12,7 +12,7 @@
+ 
+ noinst_LTLIBRARIES = libgvplugin_neato_layout_C.la
+ 
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_neato_layout.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_neato_layout.la
+@@ -40,9 +40,12 @@
+ libgvplugin_neato_layout_C_la_LIBADD += $(top_builddir)/lib/sfdpgen/libsfdpgen_C.la
+ endif
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_neato_layout_la_LDFLAGS += -no-undefined
+ libgvplugin_neato_layout_la_LIBADD += $(top_builddir)/lib/graph/libgraph.la $(top_builddir)/lib/cdt/libcdt.la
++if !OS_WIN32
++libgvplugin_neato_layout_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/pango/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/pango/Makefile.am	2008-08-26 03:02:44.499344700 -0500
+@@ -12,7 +12,7 @@
+ 
+ if WITH_PANGOCAIRO
+ noinst_LTLIBRARIES = libgvplugin_pango_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_pango.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_pango.la
+@@ -30,8 +30,11 @@
+ libgvplugin_pango_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @PANGOCAIRO_LIBS@ @MATH_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_pango_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_pango_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/quartz/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/quartz/Makefile.am	2008-08-26 03:24:26.421219700 -0500
+@@ -14,12 +14,8 @@
+ 
+ if WITH_QUARTZ
+ noinst_LTLIBRARIES = libgvplugin_quartz_C.la
+-if WITH_WIN32
+-lib_LTLIBRARIES = libgvplugin_quartz.la
+-else
+ pkglib_LTLIBRARIES = libgvplugin_quartz.la
+ endif
+-endif
+ 
+ libgvplugin_quartz_C_la_SOURCES = \
+ 	gvdevice_quartz.c \
+@@ -31,10 +27,6 @@
+ libgvplugin_quartz_la_SOURCES = $(libgvplugin_quartz_C_la_SOURCES)
+ libgvplugin_quartz_la_LIBADD = @QUARTZ_LIBS@
+ 
+-if WITH_WIN32
+-libgvplugin_quartz_la_LDFLAGS += -no-undefined
+-endif
+-
+ if WITH_DARWIN9
+ libgvplugin_quartz_la_LDFLAGS += -Wl,-exported_symbol,_gvplugin_quartz_LTX_library
+ endif
+--- origsrc/graphviz-2.20.2/plugin/rsvg/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/rsvg/Makefile.am	2008-08-26 03:02:44.546219700 -0500
+@@ -12,7 +12,7 @@
+ 
+ if WITH_RSVG
+ noinst_LTLIBRARIES = libgvplugin_rsvg_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_rsvg.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_rsvg.la
+@@ -28,8 +28,11 @@
+ libgvplugin_rsvg_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @RSVG_LIBS@ @PANGOCAIRO_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_rsvg_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_rsvg_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9
+--- origsrc/graphviz-2.20.2/plugin/xlib/Makefile.am	2008-05-21 15:37:40.000000000 -0500
++++ src/graphviz-2.20.2/plugin/xlib/Makefile.am	2008-08-26 03:02:44.561844700 -0500
+@@ -13,7 +13,7 @@
+ if WITH_PANGOCAIRO
+ if WITH_X
+ noinst_LTLIBRARIES = libgvplugin_xlib_C.la
+-if WITH_WIN32
++if OS_WIN32
+ lib_LTLIBRARIES = libgvplugin_xlib.la
+ else
+ pkglib_LTLIBRARIES = libgvplugin_xlib.la
+@@ -29,8 +29,11 @@
+ libgvplugin_xlib_la_SOURCES = $(libgvplugin_xlib_C_la_SOURCES)
+ libgvplugin_xlib_la_LIBADD = @PANGOCAIRO_LIBS@ @X_LIBS@ -lX11 @SOCKET_LIBS@ @MATH_LIBS@
+ 
+-if WITH_WIN32
++if PLATFORM_WIN32
+ libgvplugin_xlib_la_LDFLAGS += -no-undefined
++if !OS_WIN32
++libgvplugin_xlib_la_LDFLAGS += -module
++endif
+ endif
+ 
+ if WITH_DARWIN9

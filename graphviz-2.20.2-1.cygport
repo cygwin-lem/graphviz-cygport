@@ -3,9 +3,14 @@ inherit java lua mono ocaml perl php python ruby tcl # R
 DESCRIPTION="GraphViz graph visualization tools"
 HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
+PATCH_URI="
+	2.20-build.patch
+	2.20-bindings.patch
+	2.18-doxygen.patch
+"
 
 gvlibdir="/usr/lib/${PN}-${PV_MAJ_MIN}"
-gvplugins="devil gdk_pixbuf gtk ming pango rsvg xlib"
+gvplugins="devil gdk_pixbuf glitz gtk pango rsvg xlib"
 
 abi=4
 PKG_NAMES="${PN} lib${PN}${abi} lib${PN}-devel" # lib${PN}-doc"
@@ -36,44 +41,44 @@ done
 PKG_CONTENTS[1]+=" --exclude=*tcl etc/postinstall/lib${PN}${abi}.sh etc/preremove/
                    usr/bin/*-${abi}.dll ${gvlibdir#/}/ usr/sbin/"
 
-PKG_NAMES+=" guile-${PN}"
+PKG_NAMES+=" guile-gv"
 PKG_HINTS+=" guile"
 PKG_CONTENTS[$((n++))]="usr/lib/*gv_guile* usr/share/man/mann/gv_guile*"
 
-PKG_NAMES+=" java-${PN}"
+PKG_NAMES+=" java-gv"
 PKG_HINTS+=" java"
 PKG_CONTENTS[$((n++))]="usr/bin/*gv_java* usr/share/java/ usr/share/man/mann/gv_java*"
 
-PKG_NAMES+=" lua-${PN}"
+PKG_NAMES+=" lua-gv"
 PKG_HINTS+=" lua"
 PKG_CONTENTS[$((n++))]="${LUA_LIBDIR#/} usr/share/man/mann/gv_lua*"
 
-PKG_NAMES+=" ocaml-${PN}"
+PKG_NAMES+=" ocaml-gv"
 PKG_HINTS+=" ocaml"
 PKG_CONTENTS[$((n++))]="${OCAML_LIBDIR#/} usr/share/man/mann/gv_ocaml*"
 
-PKG_NAMES+=" perl-${PN}"
+PKG_NAMES+=" perl-gv"
 PKG_HINTS+=" perl"
 PKG_CONTENTS[$((n++))]="${PERL_VENDORARCH#/} usr/share/man/mann/gv_perl*"
 
-PKG_NAMES+=" php-${PN}"
+PKG_NAMES+=" php-gv"
 PKG_HINTS+=" php"
 PKG_CONTENTS[$((n++))]="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/mann/gv_php* ${PHP_PEAR_DIR#/}"
 
-PKG_NAMES+=" python-${PN}"
+PKG_NAMES+=" python-gv"
 PKG_HINTS+=" python"
 PKG_CONTENTS[$((n++))]="${PYTHON_SITELIB#/} usr/share/man/mann/gv_python*"
 
 # how is this supposed to be installed??
-#PKG_NAMES+=" R-${PN}"
+#PKG_NAMES+=" R-gv"
 #PKG_HINTS+=" R"
 #PKG_CONTENTS[$((n++))]="${R_SITELIB#/} usr/share/man/mann/gv_R*"
 
-PKG_NAMES+=" ruby-${PN}"
+PKG_NAMES+=" ruby-gv"
 PKG_HINTS+=" ruby"
 PKG_CONTENTS[$((n++))]="${RUBY_SITEARCH#/} usr/share/man/mann/gv_ruby*"
 
-PKG_NAMES+=" ${PN}-sharp"
+PKG_NAMES+=" gv-sharp"
 PKG_HINTS+=" sharp"
 PKG_CONTENTS[$((n++))]="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/mann/gv_sharp*"
 
@@ -82,7 +87,7 @@ PKG_HINTS+=" tcl"
 PKG_CONTENTS[$((n++))]="${TCL_LIBDIR#/} usr/share/man/mann/*tcl* usr/share/man/mann/tk*"
 unset n
 
-DIFF_EXCLUDES="Doxyfile libltdl"
+DIFF_EXCLUDES="Doxyfile libltdl AssemblyInfo.cs"
 
 CYGCONF_ARGS="
 	--disable-static
@@ -105,9 +110,9 @@ CYGCONF_ARGS="
 	--with-freetype2
 	--with-fontconfig
 	--with-gdk-pixbuf
+	--with-glitz
 	--with-gtk
 	--with-libgd
-	--with-ming
 	--with-pangocairo
 	--with-rsvg
 	--with-x
