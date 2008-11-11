@@ -228,4 +228,5 @@ src_install() {
 	_reset_dir ${TCL_LIBDIR}/${P}
 	mv tcl/pkgIndex.tcl tcl/*.dll ${D}${TCL_LIBDIR}/${P}/
 	rm -fr tcl/
+	rm -f ${TCL_LIBDIR}/${PN}
 }

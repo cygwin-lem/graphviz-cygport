@@ -7,54 +7,54 @@ documents; or display in an interactive graph browser. (Graphviz also
 supports GXL, an XML dialect.) 
 
 Runtime requirements:
-  cygwin-1.5.25-11
+  cygwin-1.5.25-15
   libexpat1-2.0.1-1
-  libltdl7-2.2.2-2
+  libltdl7-2.2.6a-1
   zlib-1.2.3-2
 (lefty)
-  libX11_6-1.1.3-1
-  libXaw8-1.0.4-1
-  libXmu6-1.0.3-1
-  libXt6-1.0.5-1
+  libX11_6-1.1.5-1
+  libXaw7-1.0.4-2
+  libXmu6-1.0.4-1
+  libXt6-1.0.5-2
 (plugins)
-  atk-1.20.0-1
-  gdk-pixbuf2-2.12.9-1
-  glib2-2.14.6-1
-  gtk2-x11-2.12.9-1
-  libIL1-1.6.8_rc2-1
-  libILU1-1.6.8_rc2-1
-  libX11_6-1.1.3-1
-  libcairo2-1.4.14-1
-  libfontconfig1-2.3.2-2
+  atk-1.22.0-1
+  gdk-pixbuf2-2.12.12-1
+  glib2-2.16.6-1
+  gtk2-x11-2.12.12-1
+  libIL1-1.7.1-1
+  libILU1-1.7.1-1
+  libX11_6-1.1.5-1
+  libcairo2-1.8.2-1
+  libfontconfig1-2.6.0-1
   libgd2-2.0.35-1
-  libintl8-0.15-1
+  libintl8-0.17-2
   libming0-0.4.0.beta5-2
-  librsvg2-2.20.0-1
-  pango-1.18.4-1
+  librsvg2-2.22.2-1
+  pango-1.20.5-1
 (bindings)
-  libguile17-1.8.3-1
-  lua-5.1.3-1
+  libguile17-1.8.5-1
+  lua-5.1.3-2
   ocaml-3.10.2-1
-  perl-5.10.0-3
-  php-5.2.5-1
-  python-2.5.2-1
-  ruby-1.8.6-1
-  tcl-8.4.18-1
-  tk-8.4.18-1
+  perl-5.10.0-5
+  php-5.2.6-1
+  python-2.5.2-3
+  ruby-1.8.7_p72-2
+  tcl-8.4.19-2
+  tk-8.4.19-3
 
 Build requirements:
 (besides corresponding -devel packages)
-  autoconf2.5-2.61-1
+  autoconf2.5-2.63-1
   automake1.10-1.10.1-1
-  binutils-20050817-1
-  cygport-0.3.10-1
+  binutils-20080624-2
+  cygport-0.4.2-1
   fastjar-0.94-1
   gawk-3.1.6-1
   gcc-core-3.4.4-3
   jikes-1.22-4
-  libtool-2.2.2-2
+  libtool-2.2.6a-1
   make-3.81-1
-  pkg-config-0.21-1
+  pkg-config-0.23a-2
   sed-4.1.5-2
 
 Canonical website:
@@ -66,34 +66,34 @@ Canonical download:
 -------------------------------------------
 
 Build instructions:
-  unpack graphviz-2.18-X-src.tar.bz2
+  unpack graphviz-2.20.3-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./graphviz-2.18-X.cygport all
+  cygport ./graphviz-2.20.3-X.cygport all
 
 This will create:
-  /usr/src/graphviz-2.18-X-src.tar.bz2
-  /usr/src/graphviz-2.18-X.tar.bz2
-  /usr/src/graphviz-sharp-2.18-X.tar.bz2
-  /usr/src/libgraphviz-devel-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-devil-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-gdk_pixbuf-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-gtk-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-ming-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-pango-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-rsvg-2.18-X.tar.bz2
-  /usr/src/libgraphviz4-xlib-2.18-X.tar.bz2
-  /usr/src/guile-graphviz-2.18-X.tar.bz2
-  /usr/src/java-graphviz-2.18-X.tar.bz2
-  /usr/src/lua-graphviz-2.18-X.tar.bz2
-  /usr/src/ocaml-graphviz-2.18-X.tar.bz2
-  /usr/src/perl-graphviz-2.18-X.tar.bz2
-  /usr/src/php-graphviz-2.18-X.tar.bz2
-  /usr/src/python-graphviz-2.18-X.tar.bz2
-  /usr/src/ruby-graphviz-2.18-X.tar.bz2
-  /usr/src/tcl-graphviz-2.18-X.tar.bz2
+  /usr/src/graphviz-2.20.3-X-src.tar.bz2
+  /usr/src/graphviz-2.20.3-X.tar.bz2
+  /usr/src/graphviz-sharp-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz-devel-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-devil-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-gdk_pixbuf-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-gtk-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-ming-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-pango-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-rsvg-2.20.3-X.tar.bz2
+  /usr/src/libgraphviz4-xlib-2.20.3-X.tar.bz2
+  /usr/src/guile-graphviz-2.20.3-X.tar.bz2
+  /usr/src/java-graphviz-2.20.3-X.tar.bz2
+  /usr/src/lua-graphviz-2.20.3-X.tar.bz2
+  /usr/src/ocaml-graphviz-2.20.3-X.tar.bz2
+  /usr/src/perl-graphviz-2.20.3-X.tar.bz2
+  /usr/src/php-graphviz-2.20.3-X.tar.bz2
+  /usr/src/python-graphviz-2.20.3-X.tar.bz2
+  /usr/src/ruby-graphviz-2.20.3-X.tar.bz2
+  /usr/src/tcl-graphviz-2.20.3-X.tar.bz2
 
 -------------------------------------------
 
@@ -123,12 +123,12 @@ Files included in the binary packages:
   /usr/bin/tred.exe
   /usr/bin/twopi
   /usr/bin/unflatten.exe
-  /usr/share/doc/graphviz-2.18/AUTHORS
-  /usr/share/doc/graphviz-2.18/COPYING
-  /usr/share/doc/graphviz-2.18/ChangeLog
-  /usr/share/doc/graphviz-2.18/INSTALL
-  /usr/share/doc/graphviz-2.18/NEWS
-  /usr/share/doc/graphviz-2.18/README
+  /usr/share/doc/graphviz-2.20.3/AUTHORS
+  /usr/share/doc/graphviz-2.20.3/COPYING
+  /usr/share/doc/graphviz-2.20.3/ChangeLog
+  /usr/share/doc/graphviz-2.20.3/INSTALL
+  /usr/share/doc/graphviz-2.20.3/NEWS
+  /usr/share/doc/graphviz-2.20.3/README
   /usr/share/graphviz/demo/*
   /usr/share/graphviz/doc/*
   /usr/share/graphviz/graphs/*
@@ -167,52 +167,52 @@ Files included in the binary packages:
   /usr/bin/cyggraph-4.dll
   /usr/bin/cyggvc-4.dll
   /usr/bin/cygpathplan-4.dll
-  /usr/lib/graphviz-2.18/cyggvplugin_core-5.dll
-  /usr/lib/graphviz-2.18/cyggvplugin_dot_layout-5.dll
-  /usr/lib/graphviz-2.18/cyggvplugin_gd-5.dll
-  /usr/lib/graphviz-2.18/cyggvplugin_neato_layout-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_core.la
-  /usr/lib/graphviz-2.18/libgvplugin_dot_layout.la
-  /usr/lib/graphviz-2.18/libgvplugin_gd.la
-  /usr/lib/graphviz-2.18/libgvplugin_neato_layout.la
+  /usr/lib/graphviz-2.20/cyggvplugin_core-5.dll
+  /usr/lib/graphviz-2.20/cyggvplugin_dot_layout-5.dll
+  /usr/lib/graphviz-2.20/cyggvplugin_gd-5.dll
+  /usr/lib/graphviz-2.20/cyggvplugin_neato_layout-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_core.la
+  /usr/lib/graphviz-2.20/libgvplugin_dot_layout.la
+  /usr/lib/graphviz-2.20/libgvplugin_gd.la
+  /usr/lib/graphviz-2.20/libgvplugin_neato_layout.la
   /usr/sbin/libgraphviz4-config-update.exe
 
 (libgraphviz4-devil)
   /etc/postinstall/libgraphviz4-devil.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_devil-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_devil.la
+  /usr/lib/graphviz-2.20/cyggvplugin_devil-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_devil.la
 
 (libgraphviz4-gdk_pixbuf)
   /etc/postinstall/libgraphviz4-gdk_pixbuf.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_gdk_pixbuf-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_gdk_pixbuf.la
+  /usr/lib/graphviz-2.20/cyggvplugin_gdk_pixbuf-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_gdk_pixbuf.la
 
 (libgraphviz4-gtk)
   /etc/postinstall/libgraphviz4-gtk.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_gtk-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_gtk.la
+  /usr/lib/graphviz-2.20/cyggvplugin_gtk-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_gtk.la
 
 (libgraphviz4-ming)
   /etc/postinstall/libgraphviz4-ming.sh
-  /usr/lib/graphviz-2.18/Bitstream_Vera_Sans.fdb
-  /usr/lib/graphviz-2.18/Bitstream_Vera_Serif.fdb
-  /usr/lib/graphviz-2.18/cyggvplugin_ming-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_ming.la
+  /usr/lib/graphviz-2.20/Bitstream_Vera_Sans.fdb
+  /usr/lib/graphviz-2.20/Bitstream_Vera_Serif.fdb
+  /usr/lib/graphviz-2.20/cyggvplugin_ming-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_ming.la
 
 (libgraphviz4-pango)
   /etc/postinstall/libgraphviz4-pango.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_pango-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_pango.la
+  /usr/lib/graphviz-2.20/cyggvplugin_pango-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_pango.la
 
 (libgraphviz4-rsvg)
   /etc/postinstall/libgraphviz4-rsvg.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_rsvg-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_rsvg.la
+  /usr/lib/graphviz-2.20/cyggvplugin_rsvg-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_rsvg.la
 
 (libgraphviz4-xlib)
   /etc/postinstall/libgraphviz4-xlib.sh
-  /usr/lib/graphviz-2.18/cyggvplugin_xlib-5.dll
-  /usr/lib/graphviz-2.18/libgvplugin_xlib.la
+  /usr/lib/graphviz-2.20/cyggvplugin_xlib-5.dll
+  /usr/lib/graphviz-2.20/libgvplugin_xlib.la
 
 (libgraphviz-devel)
   /usr/include/graphviz/agraph.h
@@ -327,13 +327,13 @@ Files included in the binary packages:
   /usr/share/man/mann/gv_ruby.n.gz
 
 (tcl-graphviz)
-  /usr/lib/tcl8.4/graphviz-2.18/pkgIndex.tcl
-  /usr/lib/tcl8.4/graphviz-2.18/cyggdtclft.dll
-  /usr/lib/tcl8.4/graphviz-2.18/cyggv_tcl.dll
-  /usr/lib/tcl8.4/graphviz-2.18/cygtcldot.dll
-  /usr/lib/tcl8.4/graphviz-2.18/cygtcldot_builtin.dll
-  /usr/lib/tcl8.4/graphviz-2.18/cygtclplan.dll
-  /usr/lib/tcl8.4/graphviz-2.18/cygtkspline.dll
+  /usr/lib/tcl8.4/graphviz-2.20/pkgIndex.tcl
+  /usr/lib/tcl8.4/graphviz-2.20/cyggdtclft.dll
+  /usr/lib/tcl8.4/graphviz-2.20/cyggv_tcl.dll
+  /usr/lib/tcl8.4/graphviz-2.20/cygtcldot.dll
+  /usr/lib/tcl8.4/graphviz-2.20/cygtcldot_builtin.dll
+  /usr/lib/tcl8.4/graphviz-2.20/cygtclplan.dll
+  /usr/lib/tcl8.4/graphviz-2.20/cygtkspline.dll
   /usr/share/man/mann/gdtclft.n.gz
   /usr/share/man/mann/gv_tcl.n.gz
   /usr/share/man/mann/tcldot.n.gz
@@ -342,6 +342,12 @@ Files included in the binary packages:
 ------------------
 
 Port Notes:
+
+----- version 2.20.3-1 -----
+Version bump.
+
+----- version 2.20.2-1 -----
+Version bump.
 
 ----- version 2.18-1 -----
 Version bump.
