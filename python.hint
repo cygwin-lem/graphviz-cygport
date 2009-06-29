@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Python
-requires: cygwin libgraphviz4 python
+requires: libgraphviz4 python
 external-source: graphviz
 sdesc: "Graph visualization tools (Python bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

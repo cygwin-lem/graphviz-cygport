@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Java
-requires: cygwin libgraphviz4 classpath jamvm
+requires: libgraphviz4 classpath jamvm
 external-source: graphviz
 sdesc: "Graph visualization tools (Java bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Scheme
-requires: cygwin libgraphviz4 libguile17
+requires: libgraphviz4 libguile17
 external-source: graphviz
 sdesc: "Graph visualization tools (Guile bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

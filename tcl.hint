@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Tcl
-requires: cygwin libgraphviz4 libgd2 tcl tk
+requires: libgraphviz4 libgd2 tcl tk
 external-source: graphviz
 sdesc: "Graph visualization tools (Tcl bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin libgraphviz4 libming0
+requires: libgraphviz4 libming0
 external-source: graphviz
 sdesc: "Graph visualization tools (Ming plugin)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Ruby
-requires: cygwin libgraphviz4 ruby
+requires: libgraphviz4 ruby
 external-source: graphviz
 sdesc: "Graph visualization tools (Ruby bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

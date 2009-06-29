@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin libgraphviz4 libIL1 libILU1
+requires: libgraphviz4 libIL1 libILU1
 external-source: graphviz
 sdesc: "Graph visualization tools (DevIL plugin)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

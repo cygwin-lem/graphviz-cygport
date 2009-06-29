@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin libexpat1 libgd2 libltdl7 zlib
+requires: libexpat1 libgd2 libltdl7 zlib
 external-source: graphviz
 sdesc: "Graph visualization tools (core runtime)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

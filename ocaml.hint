@@ -1,5 +1,5 @@
 category: Devel Doc Graphics OCaml
-requires: cygwin libgraphviz4 ocaml
+requires: libgraphviz4 ocaml
 external-source: graphviz
 sdesc: "Graph visualization tools (OCaml bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

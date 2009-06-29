@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Lua
-requires: cygwin libgraphviz4 lua
+requires: libgraphviz4 lua
 external-source: graphviz
 sdesc: "Graph visualization tools (Lua bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

@@ -1,5 +1,5 @@
 category: Devel Doc Graphics Perl
-requires: cygwin libgraphviz4 perl
+requires: libgraphviz4 perl
 external-source: graphviz
 sdesc: "Graph visualization tools (Perl bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

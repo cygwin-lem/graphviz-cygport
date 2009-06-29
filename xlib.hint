@@ -1,5 +1,5 @@
 category: Devel Doc Graphics X11
-requires: cygwin libgraphviz4 libX11_6 libcairo2
+requires: libgraphviz4 libX11_6 libcairo2
 external-source: graphviz
 sdesc: "Graph visualization tools (Xlib plugin)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

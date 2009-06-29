@@ -1,5 +1,5 @@
 category: Devel Doc Graphics
-requires: cygwin libgraphviz4 gdk-pixbuf2
+requires: libgraphviz4 gdk-pixbuf2
 external-source: graphviz
 sdesc: "Graph visualization tools (GdkPixbuf plugin)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
