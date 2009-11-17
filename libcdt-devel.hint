@@ -1,7 +1,7 @@
-category: Devel Doc Graphics Gnome
-requires: libgraphviz4 atk glib2 gdk-pixbuf2 gtk2-x11 libX11_6 libcairo2 libintl8
+category: Devel Graphics
+requires: libcdt4
 external-source: graphviz
-sdesc: "Graph visualization tools (GTK+ plugin)"
+sdesc: "GraphViz container datatype library (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

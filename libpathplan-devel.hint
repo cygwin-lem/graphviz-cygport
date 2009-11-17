@@ -1,7 +1,7 @@
-category: Devel Doc Graphics Ruby
-requires: libgraphviz4 ruby
+category: Devel Graphics
+requires: libpathplan4
 external-source: graphviz
-sdesc: "Graph visualization tools (Ruby bindings)"
+sdesc: "GraphViz bezier path library (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

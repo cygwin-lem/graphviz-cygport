@@ -1,7 +1,7 @@
-category: Devel Doc Graphics
-requires: libgraphviz4 libming0
+category: Devel Graphics Python
+requires: libcdt4 libgcc1 libgraph4 libgvc5 libstdc++6 python
 external-source: graphviz
-sdesc: "Graph visualization tools (Ming plugin)"
+sdesc: "Graph visualization tools (Python bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

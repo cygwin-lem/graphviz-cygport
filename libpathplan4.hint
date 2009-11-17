@@ -1,6 +1,7 @@
-category: Devel Doc Graphics
-requires: libgd2 libgraphviz4 libexpat1 libX11_6 libXaw7 libXmu6 libXt6
-sdesc: "Graph visualization tools (commands)"
+category: Devel Graphics
+requires: libgcc1
+external-source: graphviz
+sdesc: "GraphViz bezier path library (runtime)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

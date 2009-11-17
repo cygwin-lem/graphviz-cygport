@@ -1,0 +1,207 @@
+inherit lua perl python ruby php tcl # java mono ocaml
+
+DESCRIPTION="GraphViz graph visualization tools"
+HOMEPAGE="http://www.graphviz.org/"
+SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
+PATCH_URI="
+	2.24-build.patch
+	2.24-bindings.patch
+	2.18-doxygen.patch
+	2.24-vmalloc.patch
+"
+
+gvlibdir="/usr/lib/${PN}"
+gvpluginabi=6
+
+PKG_NAMES="${PN} libgvc5 libgvc-devel"
+graphviz_CONTENTS="--exclude=*.dll usr/bin/ usr/share/doc/ usr/share/${PN}/
+                   usr/share/man/man1/ usr/share/man/man7/"
+libgvc5_CONTENTS=" etc/postinstall/libgvc5.sh etc/preremove/
+                   usr/bin/cyggvc-5.dll ${gvlibdir#/}/ usr/sbin/"
+libgvc_devel_CONTENTS="--exclude=pathgeom.h "
+libpathplan_devel_CONTENTS="usr/include/graphviz/pathgeom.h "
+
+for l_v in cdt:4 cgraph:4 graph:4 pathplan:4
+do
+	l=${l_v%:*}
+	v=${l_v#*:}
+	PKG_NAMES+=" lib${l}${v} lib${l}-devel"
+
+	libgvc_devel_CONTENTS+=" --exclude=${l}.h"
+	declare lib${l}${v}_CONTENTS="usr/bin/cyg${l}-${v}.dll"
+	declare lib${l}_devel_CONTENTS+="usr/include/graphviz/${l}.h usr/lib/lib${l}.* \
+	                                 usr/lib/pkgconfig/lib${l}.pc usr/share/man/man3/${l}.3.*"
+done
+
+libgvc_devel_CONTENTS+=" usr/include/graphviz/ usr/lib/libgvc.* \
+                         usr/lib/pkgconfig/libgvc.pc usr/share/man/man3/gv*"
+
+PKG_NAMES+=" guile-gv lua-gv perl-gv php-gv python-gv ruby-gv tcl-graphviz" # java-gv mono-gv-sharp ocaml-gv R-gv
+guile_gv_CONTENTS="usr/lib/*gv_guile* usr/share/man/man3/guile*"
+#java_gv_CONTENTS="usr/bin/*gv_java* usr/share/java/ usr/share/man/man3/java*"
+lua_gv_CONTENTS="${LUA_LIBDIR#/} usr/share/man/man3/lua*"
+#mono_gv_sharp_CONTENTS="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/man3/sharp*"
+#ocaml_gv_CONTENTS="${OCAML_LIBDIR#/} usr/share/man/man3/ocaml*"
+perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
+php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
+python_gv_CONTENTS="${PYTHON_SITELIB#/} usr/share/man/man3/python*"
+ruby_gv_CONTENTS="${RUBY_SITEARCH#/} usr/share/man/man3/ruby*"
+tcl_graphviz_CONTENTS="${TCL_LIBDIR#/} usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
+
+DIFF_EXCLUDES="Doxyfile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
+
+CYGCONF_ARGS="
+	--disable-static
+	--disable-rpath
+
+	--without-devil
+
+	--enable-guile
+	--disable-java
+	--enable-lua
+	--disable-ocaml
+	--enable-perl
+	--enable-php
+	--enable-python
+	--disable-r
+	--enable-ruby
+	--disable-sharp
+	--enable-tcl
+"
+
+pkgdirargs="
+	pkgguiledir=/usr/lib
+	txtdir=/usr/share/doc/${PN}
+	htmldir=/usr/share/doc/${PN}/html
+	schemadir=/usr/share/doc/${PN}/html/schema
+	pdfdir=/usr/share/doc/${PN}/pdf
+"
+
+src_compile() {
+	cd ${S}
+	cygautoreconf
+	cd ${B}
+	cygconf # CYGCONF_ARGS defined above
+	cygmake ${pkgdirargs} LDFLAGS='-no-undefined'
+
+	cd ${B}/tclpkg/gv
+
+	if inherited java
+	then
+		${JAVAC} *.java || error "${JAVAC} compile failed"
+		mkdir -p org/graphviz
+		mv *.class org/graphviz
+		${JAR} cf gv.jar org/graphviz/ || error "${JAR} failed"
+	fi
+
+	if inherited mono
+	then
+		${MCS} -target:library -out:gv-sharp.dll *.cs || error "mcs compile failed"
+	fi
+}
+
+_reset_dir() {
+	for d
+	do
+		rm -fr ${D}${d}
+		dodir ${d}
+	done
+}
+
+src_install() {
+	cd ${B}
+	cyginstall ${pkgdirargs}
+
+	mv ${D}/usr/lib/bin/*.dll ${D}${gvlibdir}/
+	rm -f ${D}${gvlibdir}/*.{a,la}
+
+	newsbin ${D}/usr/bin/dot.exe libgvc5-config.exe
+
+	dodir /etc/postinstall /etc/preremove
+	echo "rm -f ${gvlibdir}/config${gvpluginabi}" >> ${D}/etc/preremove/libgvc5.sh
+	echo "/usr/sbin/libgvc5-config -c" >> ${D}/etc/postinstall/libgvc5.sh
+
+	pushd ${D}/usr/share/man/man3
+	for m in gv.3*
+	do
+		mv ${m} ${m#*3}-gv.3
+	done
+	popd
+
+	pushd ${D}${gvlibdir}
+
+	if inherited java
+	then
+		mv java/cyggv_java.dll ${D}/usr/bin/
+		dojar ${B}/tclpkg/gv/gv.jar
+		rm -fr java/
+	fi
+
+	if inherited lua
+	then
+		_reset_dir ${LUA_LIBDIR}
+		mv lua/cyggv_lua.dll ${D}${LUA_LIBDIR}/gv.dll
+		rm -fr lua/
+	fi
+
+	if inherited mono
+	then
+		mv sharp/cyggv_sharp.dll ${D}/usr/bin/
+		exeinto /usr/lib/mono/gv-sharp
+		doexe ${B}/tclpkg/gv/gv-sharp.dll ${C}/gv-sharp.dll.config
+		rm -fr sharp/
+	fi
+
+	if inherited ocaml
+	then
+		_reset_dir ${OCAML_LIBDIR}/gv ${OCAML_LIBDIR}/stublibs
+		mv ocaml/cyggv_ocaml.dll ${D}${OCAML_LIBDIR}/stublibs/dllgv.so
+		echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
+		mv ocaml/META* ocaml/gv.{a,cma,cmi,cmxa,mli} ${D}${OCAML_LIBDIR}/gv/
+		rm -fr ocaml/
+	fi
+
+	if inherited perl
+	then
+		_reset_dir ${PERL_VENDORARCH}
+		mv perl/gv.pm ${D}${PERL_VENDORARCH}/
+		mv perl/cyggv_perl.dll ${D}${PERL_VENDORARCH}/gv.dll
+		rm -fr perl/
+		perl_postinst
+	fi
+
+	if inherited php
+	then
+		_reset_dir ${PHP_EXTENSION_DIR} ${PHP_PEAR_DIR}
+		rm -fr ${D}/usr/lib/php/modules/ ${D}/usr/share/php/
+		mv php/cyggv_php.dll ${D}${PHP_EXTENSION_DIR}/gv.dll
+		mv php/gv.php ${D}${PHP_PEAR_DIR}/
+		rm -fr php/
+		php_postinst
+	fi
+
+	if inherited python
+	then
+		_reset_dir ${PYTHON_SITELIB}
+		mv python/cyggv_python.dll ${D}${PYTHON_SITELIB}/_gv.dll
+		mv python/gv.py ${D}${PYTHON_SITELIB}/
+		rm -fr python/
+		python_optimize
+	fi
+
+	if inherited ruby
+	then
+		_reset_dir ${RUBY_SITEARCH}
+		mv ruby/cyggv_ruby.* ${D}${RUBY_SITEARCH}/gv.so
+		rm -fr ruby/
+	fi
+
+	if inherited tcl
+	then
+		_reset_dir ${TCL_LIBDIR}/${PN}
+		mv tcl/pkgIndex.tcl tcl/*.dll ${D}${TCL_LIBDIR}/${PN}/
+		rm -fr tcl/
+	fi
+
+	popd
+}

@@ -1,7 +1,7 @@
-category: Devel Doc Graphics Tcl
-requires: libgraphviz4 libgd2 tcl tk
+category: Devel Graphics
+requires: libcdt-devel libexpat1-devel libgraph-devel libtool libpathplan-devel zlib-devel
 external-source: graphviz
-sdesc: "Graph visualization tools (Tcl bindings)"
+sdesc: "GraphViz context library (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

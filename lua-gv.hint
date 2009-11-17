@@ -1,7 +1,7 @@
-category: Devel Doc Graphics X11
-requires: libgraphviz4 libX11_6 libcairo2
+category: Devel Graphics Lua
+requires: libcdt4 libgcc1 libgraph4 libgvc5 libstdc++6 lua
 external-source: graphviz
-sdesc: "Graph visualization tools (Xlib plugin)"
+sdesc: "Graph visualization tools (Lua bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

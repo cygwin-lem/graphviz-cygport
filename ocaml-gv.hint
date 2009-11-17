@@ -1,7 +1,7 @@
-category: Devel Doc Graphics Scheme
-requires: libgraphviz4 libguile17
+category: Devel Graphics OCaml
+requires: libcdt4 libgcc1 libgraph4 libgvc5 libstdc++6 ocaml
 external-source: graphviz
-sdesc: "Graph visualization tools (Guile bindings)"
+sdesc: "Graph visualization tools (OCaml bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or
