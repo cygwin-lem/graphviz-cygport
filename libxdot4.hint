@@ -1,7 +1,7 @@
 category: Devel Graphics
-requires: libcdt4
+requires: libgcc1
 external-source: graphviz
-sdesc: "GraphViz container datatype library (development)"
+sdesc: "GraphViz xdot parser library (runtime)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or

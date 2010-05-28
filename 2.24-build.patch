@@ -1,14 +1,3 @@
---- origsrc/graphviz-2.24.0/cmd/gvpr/Makefile.am	2009-11-05 00:54:48.689228400 -0600
-+++ src/graphviz-2.24.0/cmd/gvpr/Makefile.am	2009-11-04 20:23:53.000000000 -0600
-@@ -36,7 +36,7 @@ $(gvpr_OBJECTS): gdefs.h
- 
- mkdefs_SOURCES = mkdefs.c
- 
--gdefs.h: $(top_srcdir)/cmd/gvpr/gprdata mkdefs
-+gdefs.h: $(top_srcdir)/cmd/gvpr/gprdata mkdefs$(EXEEXT)
- 	./mkdefs gdefs.h < $(top_srcdir)/cmd/gvpr/gprdata
- 
- gvpr.1.pdf: $(srcdir)/gvpr.1
 --- origsrc/graphviz-2.24.0/cmd/tools/Makefile.am	2009-11-05 00:54:48.719228400 -0600
 +++ src/graphviz-2.24.0/cmd/tools/Makefile.am	2009-11-05 00:26:10.258543800 -0600
 @@ -136,9 +136,10 @@ gvpack_SOURCES = gvpack.c gvpack_builtin

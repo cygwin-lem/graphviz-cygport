@@ -1,9 +1,0 @@
-category: Devel Graphics
-requires: libcdt-devel libcgraph4
-external-source: graphviz
-sdesc: "GraphViz cgraph library (development)"
-ldesc: "The Graphviz layout programs take descriptions of graphs in a
-simple text language, and make diagrams in several useful formats such
-as images and SVG for web pages, Postscript for inclusion in PDF or
-other documents; or display in an interactive graph browser. (Graphviz
-also supports GXL, an XML dialect.)"

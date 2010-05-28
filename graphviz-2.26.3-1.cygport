@@ -1,4 +1,4 @@
-inherit lua perl python ruby php tcl # java mono ocaml
+inherit java lua mono perl python ruby php tcl # ocaml
 
 DESCRIPTION="GraphViz graph visualization tools"
 HOMEPAGE="http://www.graphviz.org/"
@@ -18,29 +18,22 @@ graphviz_CONTENTS="--exclude=*.dll usr/bin/ usr/share/doc/ usr/share/${PN}/
                    usr/share/man/man1/ usr/share/man/man7/"
 libgvc5_CONTENTS=" etc/postinstall/libgvc5.sh etc/preremove/
                    usr/bin/cyggvc-5.dll ${gvlibdir#/}/ usr/sbin/"
-libgvc_devel_CONTENTS="--exclude=pathgeom.h "
-libpathplan_devel_CONTENTS="usr/include/graphviz/pathgeom.h "
+libgvc_devel_CONTENTS="--exclude=*gv_guile* --exclude=*-*.3* usr/include/
+                       usr/lib/lib* usr/lib/pkgconfig/ usr/share/man/man3/*.3.*"
 
-for l_v in cdt:4 cgraph:4 graph:4 pathplan:4
+for l_v in cdt:4 cgraph:5 graph:4 gvpr:1 pathplan:4 xdot:4
 do
 	l=${l_v%:*}
 	v=${l_v#*:}
-	PKG_NAMES+=" lib${l}${v} lib${l}-devel"
-
-	libgvc_devel_CONTENTS+=" --exclude=${l}.h"
+	PKG_NAMES+=" lib${l}${v}"
 	declare lib${l}${v}_CONTENTS="usr/bin/cyg${l}-${v}.dll"
-	declare lib${l}_devel_CONTENTS+="usr/include/graphviz/${l}.h usr/lib/lib${l}.* \
-	                                 usr/lib/pkgconfig/lib${l}.pc usr/share/man/man3/${l}.3.*"
 done
 
-libgvc_devel_CONTENTS+=" usr/include/graphviz/ usr/lib/libgvc.* \
-                         usr/lib/pkgconfig/libgvc.pc usr/share/man/man3/gv*"
-
-PKG_NAMES+=" guile-gv lua-gv perl-gv php-gv python-gv ruby-gv tcl-graphviz" # java-gv mono-gv-sharp ocaml-gv R-gv
+PKG_NAMES+=" guile-gv java-gv lua-gv mono-gv-sharp perl-gv php-gv python-gv ruby-gv tcl-graphviz" # ocaml-gv R-gv
 guile_gv_CONTENTS="usr/lib/*gv_guile* usr/share/man/man3/guile*"
-#java_gv_CONTENTS="usr/bin/*gv_java* usr/share/java/ usr/share/man/man3/java*"
+java_gv_CONTENTS="usr/bin/*gv_java* ${JAVA_DIR#/} usr/share/man/man3/java*"
 lua_gv_CONTENTS="${LUA_LIBDIR#/} usr/share/man/man3/lua*"
-#mono_gv_sharp_CONTENTS="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/man3/sharp*"
+mono_gv_sharp_CONTENTS="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/man3/sharp*"
 #ocaml_gv_CONTENTS="${OCAML_LIBDIR#/} usr/share/man/man3/ocaml*"
 perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
 php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
@@ -57,7 +50,7 @@ CYGCONF_ARGS="
 	--without-devil
 
 	--enable-guile
-	--disable-java
+	--enable-java
 	--enable-lua
 	--disable-ocaml
 	--enable-perl
@@ -65,7 +58,7 @@ CYGCONF_ARGS="
 	--enable-python
 	--disable-r
 	--enable-ruby
-	--disable-sharp
+	--enable-sharp
 	--enable-tcl
 "
 
@@ -97,6 +90,11 @@ src_compile() {
 	if inherited mono
 	then
 		${MCS} -target:library -out:gv-sharp.dll *.cs || error "mcs compile failed"
+		cat > gv-sharp.dll.config <<-_EOF
+			<configuration>
+			    <dllmap dll="gv"  target="cyggv_sharp.dll" />
+			</configuration>
+		_EOF
 	fi
 }
 
@@ -147,8 +145,8 @@ src_install() {
 	if inherited mono
 	then
 		mv sharp/cyggv_sharp.dll ${D}/usr/bin/
-		exeinto /usr/lib/mono/gv-sharp
-		doexe ${B}/tclpkg/gv/gv-sharp.dll ${C}/gv-sharp.dll.config
+		insinto /usr/lib/mono/gv-sharp
+		doins ${B}/tclpkg/gv/gv-sharp.dll{,.config}
 		rm -fr sharp/
 	fi
 

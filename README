@@ -7,47 +7,48 @@ documents; or display in an interactive graph browser. (Graphviz also
 supports GXL, an XML dialect.) 
 
 Runtime requirements:
-  cygwin-1.7.0-62
+  cygwin-1.7.5-1
   libatk1.0_0-1.28.0-1
-  libcairo2-1.8.8-1
+  libcairo2-1.8.10-1
   libexpat1-2.0.1-1
-  libgcc1-4.3.4-1
+  libgcc1-4.3.4-3
   libgd2-2.0.36RC1-10
-  libgdk_pixbuf2.0_0-2.18.3-1
-  libglib2.0_0-2.22.2-1
+  libgdk_pixbuf2.0_0-2.18.6-1
+  libglib2.0_0-2.22.4-2
   libgs8-8.63-2
-  libgtk2.0_0-2.18.3-1
+  libgtk2.0_0-2.18.6-1
   libgts0.7_5-0.7.6-1
   libLASi0-1.1.0-1
-  libltdl7-2.2.7a-14
-  libpango1.0_0-1.26.0-1
-  librsvg2_2-2.26.0-1
-  libstdc++6-4.3.4-1
-  libX11_6-1.3.2-1
+  libltdl7-2.2.7a-15
+  libpango1.0_0-1.26.2-1
+  librsvg2_2-2.26.0-2
+  libstdc++6-4.3.4-3
+  libX11_6-1.3.3-1
   libXaw7-1.0.7-1
   libXmu6-1.0.5-1
-  libXt6-1.0.7-1
+  libXt6-1.0.8-1
   zlib0-1.2.3-10
 (bindings)
-  libguile17-1.8.6-1
+  jamvm-1.5.3-1
+  libguile17-1.8.7-1
   lua-5.1.4-11
-  perl-5.10.0-5
-  php-5.2.11-1
-  python-2.5.4-10
+  mono-2.4.3.1-1
+  php-5.2.12-1
+  python-2.6.5-1
   ruby-1.8.7_p72-10
   tcl-8.5.6-2
   tk-8.5.6-1
 
 Build requirements:
 (besides corresponding -devel packages)
-  autoconf2.5-2.63-10
-  automake1.10-1.10.2-1
-  binutils-2.19.51-1
-  cygport-0.9.10-1
+  autoconf2.5-2.65-1
+  automake1.10-1.10.3-1
+  binutils-2.20.51-2
+  cygport-0.9.84-1
   gawk-3.1.7-1
-  gcc4-core-4.3.4-1
-  gcc4-g++-4.3.4-1
-  libtool-2.2.7a-14
+  gcc4-core-4.3.4-3
+  gcc4-g++-4.3.4-3
+  libtool-2.2.7a-15
   make-3.81-2
   pkg-config-0.23b-10
   sed-4.1.5-2
@@ -62,36 +63,41 @@ Canonical download:
 -------------------------------------------
 
 Build instructions:
-  unpack graphviz-2.24.0-X-src.tar.bz2
+  unpack graphviz-2.26.3-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./graphviz-2.24.0-X.cygport all
+  cygport ./graphviz-2.26.3-X.cygport all
 
 This will create:
-  /usr/src/graphviz-2.24.0-X-src.tar.bz2
-  /usr/src/graphviz-2.24.0-X.tar.bz2
-  /usr/src/guile-gv-2.24.0-X.tar.bz2
-  /usr/src/libcdt-devel-2.24.0-X.tar.bz2
-  /usr/src/libcdt4-2.24.0-X.tar.bz2
-  /usr/src/libcgraph-devel-2.24.0-X.tar.bz2
-  /usr/src/libcgraph4-2.24.0-X.tar.bz2
-  /usr/src/libgraph-devel-2.24.0-X.tar.bz2
-  /usr/src/libgraph4-2.24.0-X.tar.bz2
-  /usr/src/libgvc-devel-2.24.0-X.tar.bz2
-  /usr/src/libgvc5-2.24.0-X.tar.bz2
-  /usr/src/libpathplan-devel-2.24.0-X.tar.bz2
-  /usr/src/libpathplan4-2.24.0-X.tar.bz2
-  /usr/src/lua-gv-2.24.0-X.tar.bz2
-  /usr/src/perl-gv-2.24.0-X.tar.bz2
-  /usr/src/php-gv-2.24.0-X.tar.bz2
-  /usr/src/python-gv-2.24.0-X.tar.bz2
-  /usr/src/ruby-gv-2.24.0-X.tar.bz2
-  /usr/src/tcl-graphviz-2.24.0-X.tar.bz2
+  /usr/src/graphviz-2.26.3-X-src.tar.bz2
+  /usr/src/graphviz-2.26.3-X.tar.bz2
+  /usr/src/guile-gv-2.26.3-X.tar.bz2
+  /usr/src/java-gv-2.26.3-X.tar.bz2
+  /usr/src/libcdt4-2.26.3-X.tar.bz2
+  /usr/src/libcgraph5-2.26.3-X.tar.bz2
+  /usr/src/libgraph4-2.26.3-X.tar.bz2
+  /usr/src/libgvc-devel-2.26.3-X.tar.bz2
+  /usr/src/libgvc5-2.26.3-X.tar.bz2
+  /usr/src/libgvpr1-2.26.3-X.tar.bz2
+  /usr/src/libpathplan4-2.26.3-X.tar.bz2
+  /usr/src/libxdot4-2.26.3-X.tar.bz2
+  /usr/src/lua-gv-2.26.3-X.tar.bz2
+  /usr/src/mono-gv-2.26.3-X.tar.bz2
+  /usr/src/perl-gv-2.26.3-X.tar.bz2
+  /usr/src/php-gv-2.26.3-X.tar.bz2
+  /usr/src/python-gv-2.26.3-X.tar.bz2
+  /usr/src/ruby-gv-2.26.3-X.tar.bz2
+  /usr/src/tcl-graphviz-2.26.3-X.tar.bz2
 
 -------------------------------------------
 
 Port Notes:
+
+----- version 2.26.3-1 -----
+Version bump.
+New libraries: libgvpr, libxdot.
+New bindings: java, mono.
 
 ----- version 2.24.0-1 -----
 Initial release for Cygwin 1.7.

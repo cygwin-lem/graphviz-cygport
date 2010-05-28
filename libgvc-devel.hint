@@ -1,5 +1,5 @@
 category: Devel Graphics
-requires: libcdt-devel libexpat1-devel libgraph-devel libtool libpathplan-devel zlib-devel
+requires: libcdt4 libcgraph5 libgraph4 libgvc5 libgvpr1 libpathplan4 libxdot4 libexpat1-devel libtool zlib-devel
 external-source: graphviz
 sdesc: "GraphViz context library (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
