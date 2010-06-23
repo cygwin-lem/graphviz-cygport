@@ -1,5 +1,5 @@
 category: Devel Graphics Tcl
-requires: libcairo2 libcdt4 libexpat1 libgcc1 libgd2 libglib2.0_0 libgraph4 libgts0.7_5 libgvc5 libltdl7 libpango1.0_0 libpathplan4 libstdc++6 zlib0 tcl tk
+requires: libcairo2 libcdt4 libexpat1 libgcc1 libgd2 libglib2.0_0 libgraph4 libgts0.7_5 libgvc5 libltdl7 libpango1.0_0 libpathplan4 libstdc++6 zlib0 tcl tcl-tk
 external-source: graphviz
 sdesc: "Graph visualization tools (Tcl bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
