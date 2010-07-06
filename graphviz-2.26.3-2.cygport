@@ -1,11 +1,11 @@
-inherit java lua mono perl python ruby php tcl # ocaml
+inherit lua perl python ruby tcl # java mono php ocaml
 
 DESCRIPTION="GraphViz graph visualization tools"
 HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
 PATCH_URI="
 	2.24-build.patch
-	2.24-bindings.patch
+	2.26-bindings.patch
 	2.18-doxygen.patch
 	2.24-vmalloc.patch
 "
@@ -16,8 +16,8 @@ gvpluginabi=6
 PKG_NAMES="${PN} libgvc5 libgvc-devel"
 graphviz_CONTENTS="--exclude=*.dll usr/bin/ usr/share/doc/ usr/share/${PN}/
                    usr/share/man/man1/ usr/share/man/man7/"
-libgvc5_CONTENTS=" etc/postinstall/libgvc5.sh etc/preremove/
-                   usr/bin/cyggvc-5.dll ${gvlibdir#/}/ usr/sbin/"
+libgvc5_CONTENTS="--exclude=tcl etc/postinstall/libgvc5.sh etc/preremove/
+                  usr/bin/cyggvc-5.dll ${gvlibdir#/}/ usr/sbin/"
 libgvc_devel_CONTENTS="--exclude=*gv_guile* --exclude=*-*.3* usr/include/
                        usr/lib/lib* usr/lib/pkgconfig/ usr/share/man/man3/*.3.*"
 
@@ -29,17 +29,18 @@ do
 	declare lib${l}${v}_CONTENTS="usr/bin/cyg${l}-${v}.dll"
 done
 
-PKG_NAMES+=" guile-gv java-gv lua-gv mono-gv-sharp perl-gv php-gv python-gv ruby-gv tcl-graphviz" # ocaml-gv R-gv
+PKG_NAMES+=" guile-gv lua-gv perl-gv python-gv ruby-gv tcl-tcldot"
+#  disabled: java-gv mono-gv-sharp ocaml-gv php-gv R-gv
 guile_gv_CONTENTS="usr/lib/*gv_guile* usr/share/man/man3/guile*"
 java_gv_CONTENTS="usr/bin/*gv_java* ${JAVA_DIR#/} usr/share/man/man3/java*"
 lua_gv_CONTENTS="${LUA_LIBDIR#/} usr/share/man/man3/lua*"
 mono_gv_sharp_CONTENTS="usr/bin/cyggv_sharp.dll usr/lib/mono/ usr/share/man/man3/sharp*"
-#ocaml_gv_CONTENTS="${OCAML_LIBDIR#/} usr/share/man/man3/ocaml*"
+ocaml_gv_CONTENTS="${OCAML_LIBDIR#/} usr/share/man/man3/ocaml*"
 perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
 php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
 python_gv_CONTENTS="${PYTHON_SITELIB#/} usr/share/man/man3/python*"
 ruby_gv_CONTENTS="${RUBY_SITEARCH#/} usr/share/man/man3/ruby*"
-tcl_graphviz_CONTENTS="${TCL_LIBDIR#/} usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
+tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
 
 DIFF_EXCLUDES="Doxyfile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
 
@@ -48,17 +49,23 @@ CYGCONF_ARGS="
 	--disable-rpath
 
 	--without-devil
+	--without-gdk-pixbuf
+	--without-glade
+	--without-gtk
+	--without-gtkgl
+	--without-gtkglext
+	--without-gts
 
 	--enable-guile
-	--enable-java
+	--disable-java
 	--enable-lua
 	--disable-ocaml
 	--enable-perl
-	--enable-php
+	--disable-php
 	--enable-python
 	--disable-r
 	--enable-ruby
-	--enable-sharp
+	--disable-sharp
 	--enable-tcl
 "
 
@@ -81,10 +88,10 @@ src_compile() {
 
 	if inherited java
 	then
-		${JAVAC} *.java || error "${JAVAC} compile failed"
+		cygjavac *.java
 		mkdir -p org/graphviz
 		mv *.class org/graphviz
-		${JAR} cf gv.jar org/graphviz/ || error "${JAR} failed"
+		cygjar cf gv.jar org/graphviz/
 	fi
 
 	if inherited mono
@@ -99,6 +106,8 @@ src_compile() {
 }
 
 _reset_dir() {
+	local d
+
 	for d
 	do
 		rm -fr ${D}${d}
@@ -110,6 +119,7 @@ src_install() {
 	cd ${B}
 	cyginstall ${pkgdirargs}
 
+	# these libraries are actually modules
 	mv ${D}/usr/lib/bin/*.dll ${D}${gvlibdir}/
 	rm -f ${D}${gvlibdir}/*.{a,la}
 
@@ -196,8 +206,8 @@ src_install() {
 
 	if inherited tcl
 	then
-		_reset_dir ${TCL_LIBDIR}/${PN}
-		mv tcl/pkgIndex.tcl tcl/*.dll ${D}${TCL_LIBDIR}/${PN}/
+		_reset_dir /usr/lib/tcldot${PV}
+		mv tcl/*.dll tcl/*.tcl ${D}/usr/lib/tcldot${PV}/
 		rm -fr tcl/
 	fi
 

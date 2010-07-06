@@ -68,3 +68,14 @@
 +
 +%: %.o
 +	$(CC) -o $@ $< $(LDADD)
+--- origsrc/graphviz-2.26.3/lib/gvpr/Makefile.am	2009-08-31 14:40:58.000000000 -0500
++++ src/graphviz-2.26.3/lib/gvpr/Makefile.am	2010-07-02 16:07:41.109696900 -0500
+@@ -44,7 +44,7 @@ libgvpr_la_DEPENDENCIES = $(libgvpr_C_la
+ 
+ mkdefs_SOURCES = mkdefs.c
+ 
+-gdefs.h: $(top_srcdir)/lib/gvpr/gprdata mkdefs
++gdefs.h: $(top_srcdir)/lib/gvpr/gprdata mkdefs$(EXEEXT)
+ 	./mkdefs gdefs.h < $(top_srcdir)/lib/gvpr/gprdata
+ 
+ EXTRA_DIST = $(man_MANS) $(pdf_DATA) Makefile.old gprdata mkdefs.c gdefs.h trie.c gvprlib.vcproj

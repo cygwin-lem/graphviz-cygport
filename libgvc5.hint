@@ -1,5 +1,5 @@
 category: Devel Graphics
-requires: libcairo2 libcdt4 libexpat1 libgcc1 libgd2 libgdk_pixbuf2.0_0 libglib2.0_0 libgraph4 libgs8 libgts0.7_5 libLASi0 libltdl7 libpango1.0_0 libpathplan4 librsvg2_2 libstdc++6 libX11_6 zlib0
+requires: libcairo2 libcdt4 libexpat1 libgcc1 libgd2 libglib2.0_0 libgraph4 libgs8 libLASi0 libltdl7 libpango1.0_0 libpathplan4 librsvg2_2 libstdc++6 libX11_6 zlib0
 external-source: graphviz
 sdesc: "GraphViz context library (development)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
