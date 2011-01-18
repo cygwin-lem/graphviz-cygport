@@ -23,7 +23,7 @@
          PHP_INSTALL_DIR="/usr/lib${LIBPOSTFIX}/php/modules"
          PHP_INSTALL_DATADIR="/usr/share/php"
 -        PHP_LIBS=
-+        PHP_LIBS=-lphp5lib
++        PHP_LIBS=-lphp5
          save_CPPFLAGS=$CPPFLAGS
          CPPFLAGS="$CPPFLAGS $PHP_INCLUDES"
          AC_CHECK_HEADER(php.h,,[
