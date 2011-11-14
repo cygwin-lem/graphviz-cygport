@@ -34,7 +34,7 @@
  	$libperl = $Config{libperl};
  	$libperl =~ s/lib([^\.]+).*/$1/;
 -	print "-L$archlib/CORE -l$libperl";
-+	print "-L$archlib/CORE -lperl";
++	print "-L$archlib/CORE -lperl -lssp";
  }
  if ($ARGV[0] eq "PERL_INCLUDES") {
  	$archlib = $Config{archlib};
@@ -127,9 +127,9 @@
  libtcldot_la_LIBADD = $(top_builddir)/tclpkg/tclhandle/libtclhandle_C.la \
 -	$(top_builddir)/tclpkg/tclstubs/libtclstubs_C.la \
 +	$(TCL_STUB_LIB_SPEC) \
- 	$(top_builddir)/lib/gvc/libgvc.la 
- 
- libtcldot_la_DEPENDENCIES =  $(top_builddir)/lib/gvc/libgvc.la
+ 	$(top_builddir)/lib/cdt/libcdt.la \
+ 	$(top_builddir)/lib/$(GRAPH)/lib$(GRAPH).la \
+ 	$(top_builddir)/lib/pathplan/libpathplan_C.la \
 @@ -67,7 +65,7 @@ libtcldot_la_LIBADD += $(LIBGEN_LIBS) $(
  
  libtcldot_builtin_la_SOURCES = tcldot.c tcldot_builtins.c $(GDTCLFT)
@@ -160,7 +160,7 @@
  	$(top_builddir)/tclpkg/tclhandle/libtclhandle_C.la \
 -	$(top_builddir)/tclpkg/tclstubs/libtclstubs_C.la \
 +	$(TCL_STUB_LIB_SPEC) \
- 	$(top_builddir)/lib/pathplan/libpathplan.la
+ 	$(top_builddir)/lib/pathplan/libpathplan.la $(MATH_LIBS)
  
  if WITH_TCL
 --- origsrc/graphviz-2.26.3/tclpkg/tkspline/Makefile.am	2010-06-23 03:56:09.947568600 -0500

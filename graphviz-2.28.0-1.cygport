@@ -1,4 +1,4 @@
-inherit lua perl python ruby tcl # java mono php ocaml
+inherit java lua mono ocaml perl php python ruby tcl
 
 DESCRIPTION="GraphViz graph visualization tools"
 HOMEPAGE="http://www.graphviz.org/"
@@ -10,18 +10,21 @@ PATCH_URI="
 	2.24-vmalloc.patch
 "
 
-gvlibdir="/usr/lib/${PN}"
+gvlibdir="/usr/lib/${PN}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
-PKG_NAMES="${PN} libgvc5 libgvc-devel"
-graphviz_CONTENTS="--exclude=*.dll usr/bin/ usr/share/doc/ usr/share/${PN}/
-                   usr/share/man/man1/ usr/share/man/man7/"
-libgvc5_CONTENTS="--exclude=tcl etc/postinstall/libgvc5.sh etc/preremove/
-                  usr/bin/cyggvc-5.dll ${gvlibdir#/}/ usr/sbin/"
+PKG_NAMES="${PN} gvedit libgvc6 libgvc-devel"
+graphviz_CONTENTS="--exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
+                   usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
+gvedit_CONTENTS="usr/bin/gvedit.exe usr/share/applications/
+                 usr/share/doc/graphviz/pdf/gvedit.* usr/share/graphviz/gvedit/
+                 usr/share/man/man1/gvedit.* usr/share/pixmaps/"
+libgvc6_CONTENTS="--exclude=tcl etc/postinstall/libgvc6.sh etc/preremove/
+                  usr/bin/cyggvc-6.dll ${gvlibdir#/}/ usr/sbin/"
 libgvc_devel_CONTENTS="--exclude=*gv_guile* --exclude=*-*.3* usr/include/
                        usr/lib/lib* usr/lib/pkgconfig/ usr/share/man/man3/*.3.*"
 
-for l_v in cdt:4 cgraph:5 graph:4 gvpr:1 pathplan:4 xdot:4
+for l_v in cdt:5 cgraph:6 graph:5 gvpr:2 pathplan:4 xdot:4
 do
 	l=${l_v%:*}
 	v=${l_v#*:}
@@ -29,8 +32,9 @@ do
 	declare lib${l}${v}_CONTENTS="usr/bin/cyg${l}-${v}.dll"
 done
 
-PKG_NAMES+=" guile-gv lua-gv perl-gv python-gv ruby-gv tcl-tcldot"
-#  disabled: java-gv mono-gv-sharp ocaml-gv php-gv R-gv
+PKG_NAMES+=" guile-gv java-gv lua-gv mono-gv-sharp ocaml-gv perl-gv php-gv
+             python-gv ruby-gv tcl-tcldot"
+#  disabled: R-gv
 guile_gv_CONTENTS="usr/lib/*gv_guile* usr/share/man/man3/guile*"
 java_gv_CONTENTS="usr/bin/*gv_java* ${JAVA_DIR#/} usr/share/man/man3/java*"
 lua_gv_CONTENTS="${LUA_LIBDIR#/} usr/share/man/man3/lua*"
@@ -44,12 +48,12 @@ tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man
 
 DIFF_EXCLUDES="Doxyfile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
 
+# ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
 	--disable-static
 	--disable-rpath
 
 	--without-devil
-	--without-gdk-pixbuf
 	--without-glade
 	--without-gtk
 	--without-gtkgl
@@ -57,20 +61,21 @@ CYGCONF_ARGS="
 	--without-gts
 
 	--enable-guile
-	--disable-java
+	--enable-java
 	--enable-lua
 	--disable-ocaml
 	--enable-perl
-	--disable-php
+	--enable-php
 	--enable-python
 	--disable-r
 	--enable-ruby
-	--disable-sharp
+	--enable-sharp
 	--enable-tcl
 "
 
 pkgdirargs="
 	pkgguiledir=/usr/lib
+	pkglibdir=${gvlibdir}
 	txtdir=/usr/share/doc/${PN}
 	htmldir=/usr/share/doc/${PN}/html
 	schemadir=/usr/share/doc/${PN}/html/schema
@@ -82,6 +87,9 @@ src_compile() {
 	cygautoreconf
 	cd ${B}
 	cygconf # CYGCONF_ARGS defined above
+	# not VPATH safe
+	lndirs ${S}/cmd/gvedit ${B}/cmd/gvedit
+
 	cygmake ${pkgdirargs} LDFLAGS='-no-undefined'
 
 	cd ${B}/tclpkg/gv
@@ -98,10 +106,16 @@ src_compile() {
 	then
 		${MCS} -target:library -out:gv-sharp.dll *.cs || error "mcs compile failed"
 		cat > gv-sharp.dll.config <<-_EOF
-			<configuration>
-			    <dllmap dll="gv"  target="cyggv_sharp.dll" />
-			</configuration>
+<configuration>
+    <dllmap dll="gv"  target="cyggv_sharp.dll" />
+</configuration>
 		_EOF
+	fi
+
+	if inherited ocaml
+	then
+		make libgv_ocaml.la gv.a
+		ocamlmklib -v -o gv .libs/libgv_ocaml_la-gv*.o -L${B}/lib/gvc/.libs -L${B}/lib/graph/.libs -L${B}/lib/cdt/.libs -lgvc -lgraph -lcdt -lstdc++
 	fi
 }
 
@@ -123,11 +137,20 @@ src_install() {
 	mv ${D}/usr/lib/bin/*.dll ${D}${gvlibdir}/
 	rm -f ${D}${gvlibdir}/*.{a,la}
 
-	newsbin ${D}/usr/bin/dot.exe libgvc5-config.exe
+	# This executable is useless as it links against libgvplugin_*
+	# The alternative is dot_static (built if --enable-static) but
+	# there is really no need for either
+	rm -f ${D}/usr/bin/dot_builtins.exe
+
+	newsbin ${D}/usr/bin/dot.exe libgvc6-config.exe
 
 	dodir /etc/postinstall /etc/preremove
-	echo "rm -f ${gvlibdir}/config${gvpluginabi}" >> ${D}/etc/preremove/libgvc5.sh
-	echo "/usr/sbin/libgvc5-config -c" >> ${D}/etc/postinstall/libgvc5.sh
+	echo "rm -f ${gvlibdir}/config${gvpluginabi}" >> ${D}/etc/preremove/libgvc6.sh
+	echo "/usr/sbin/libgvc6-config -c" >> ${D}/etc/postinstall/libgvc6.sh
+
+	newicon ${S}/cmd/gvedit/images/icon.png gvedit.png
+	# categories from KGraphViewer
+	make_desktop_entry gvedit "GraphViz Editor" gvedit "Graphics;2DGraphics;Viewer;DataVisualization;Qt"
 
 	pushd ${D}/usr/share/man/man3
 	for m in gv.3*
@@ -162,11 +185,22 @@ src_install() {
 
 	if inherited ocaml
 	then
-		_reset_dir ${OCAML_LIBDIR}/gv ${OCAML_LIBDIR}/stublibs
-		mv ocaml/cyggv_ocaml.dll ${D}${OCAML_LIBDIR}/stublibs/dllgv.so
+		pushd ${B}/tclpkg/gv
+		exeinto ${OCAML_LIBDIR}/stublibs
+		doexe dllgv.so
 		echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
-		mv ocaml/META* ocaml/gv.{a,cma,cmi,cmxa,mli} ${D}${OCAML_LIBDIR}/gv/
-		rm -fr ocaml/
+		insinto ${OCAML_LIBDIR}/gv
+		doins gv.{a,cma,cmi,cmxa,mli}
+		echo > ${D}${OCAML_LIBDIR}/gv/META <<_EOF
+name="gv"
+version="${PV}"
+description="OCaml bindings for graphviz"
+requires=""
+archive(byte)="gv.cma"
+archive(native)="gv.cmxa"
+_EOF
+		newman ${S}/tclpkg/gv/gv.3ocaml ocaml-gv.3
+		popd
 	fi
 
 	if inherited perl

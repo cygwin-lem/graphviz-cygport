@@ -47,18 +47,6 @@
  			AC_DEFINE_UNQUOTED(GVDLL,1, [Define for DLLs on Windows.])
  		;;
  	esac
-@@ -475,10 +475,10 @@ m4_ifdef([LT_INIT],
-     ],
-     [ #code that is for 1.5.x
-   AC_CONFIG_SUBDIRS([libltdl])
-+  AC_LIBLTDL_CONVENIENCE
-     ])
-   use_ltdl="Yes"
-   
--  AC_LIBLTDL_CONVENIENCE
-   if test "x$DARWIN9" = "xyes"; then
-      LIBLTDL_LDFLAGS="-Wl,-unexported_symbol,_lt_*"
-   fi
 --- origsrc/graphviz-2.24.0/dot.demo/Makefile	2009-11-05 00:54:48.729228400 -0600
 +++ src/graphviz-2.24.0/dot.demo/Makefile	2009-11-04 20:23:54.000000000 -0600
 @@ -11,3 +11,6 @@ neatopack: neatopack.o

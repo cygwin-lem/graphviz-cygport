@@ -1,5 +1,5 @@
 category: Devel Graphics Lua
-requires: libcdt4 libgcc1 libgraph4 libgvc5 libstdc++6 lua
+requires: libcdt5 libgraph5 libgvc6 lua
 external-source: graphviz
 sdesc: "Graph visualization tools (Lua bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

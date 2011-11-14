@@ -1,5 +1,5 @@
 category: Devel Graphics Dotnet
-requires: libgraphviz4 mono
+requires: libcdt5 libgraph5 libgvc6 mono
 external-source: graphviz
 sdesc: "Graph visualization tools (Mono bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

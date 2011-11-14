@@ -1,5 +1,5 @@
 category: Devel Graphics PHP
-requires: libcdt4 libgcc1 libgraph4 libgvc5 libstdc++6 php
+requires: libcdt5 libgraph5 libgvc6 php
 external-source: graphviz
 sdesc: "Graph visualization tools (PHP bindings)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a

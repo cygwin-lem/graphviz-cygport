@@ -1,6 +1,7 @@
 category: Devel Graphics
-requires: libcdt5 libcgraph6 libexpat1 libgcc1 libgd2 libglib2.0_0 libgraph5 libgvc6 libgvpr2 libpathplan4 libX11_6 libXaw7 libXmu6 libXt6
-sdesc: "GraphViz visualization tools"
+requires: libcdt5
+external-source: graphviz
+sdesc: "GraphViz graph library (runtime)"
 ldesc: "The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such
 as images and SVG for web pages, Postscript for inclusion in PDF or
