@@ -1,9 +1,0 @@
-category: Devel Graphics
-requires: libcairo2 libcdt5 libexpat1 libgd2 libgdk_pixbuf2.0_0 libglib2.0_0 libgraph5 libgs9 libLASi0 libltdl7 libpango1.0_0 libpathplan4 librsvg2_2 libstdc++6 libX11_6 zlib0
-external-source: graphviz
-sdesc: "GraphViz context library (runtime)"
-ldesc: "The Graphviz layout programs take descriptions of graphs in a
-simple text language, and make diagrams in several useful formats such
-as images and SVG for web pages, Postscript for inclusion in PDF or
-other documents; or display in an interactive graph browser. (Graphviz
-also supports GXL, an XML dialect.)"

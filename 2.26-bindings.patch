@@ -27,6 +27,14 @@
          save_CPPFLAGS=$CPPFLAGS
          CPPFLAGS="$CPPFLAGS $PHP_INCLUDES"
          AC_CHECK_HEADER(php.h,,[
+@@ -1510,6 +1510,7 @@ else
+ 	use_ruby="No (ruby not available)"
+       else
+         RUBY_INCLUDES="-I`$RUBY $srcdir/config/config_ruby.rb INCLUDES`"
++        RUBY_INCLUDES="$RUBY_INCLUDES $RUBY_INCLUDES/`$RUBY $srcdir/config/config_ruby.rb arch`"
+ 	# hack for powerpc-darwin8 (10.4)
+ 	if test "x$DARWIN" = "xyes"; then
+ 	  RUBY_INCLUDES=`echo $RUBY_INCLUDES | sed 's/powerpc/universal/'`
 --- origsrc/graphviz-2.26.3/config/config_perl.pl	2008-07-14 07:54:04.000000000 -0500
 +++ src/graphviz-2.26.3/config/config_perl.pl	2010-07-05 17:45:20.489567700 -0500
 @@ -4,7 +4,7 @@ use Config;
@@ -38,6 +46,31 @@
  }
  if ($ARGV[0] eq "PERL_INCLUDES") {
  	$archlib = $Config{archlib};
+--- origsrc/graphviz-2.28.0/config/config_ruby.rb	2011-02-18 15:25:56.000000000 -0600
++++ src/graphviz-2.28.0/config/config_ruby.rb	2012-08-24 03:11:58.425464600 -0500
+@@ -1,16 +1,17 @@
+ require 'rbconfig'
+ 
+-CONFIG = Config::MAKEFILE_CONFIG
+ 
+ 
+ case ARGV[0]
+ when "INCLUDES"
+-    puts Config::expand(CONFIG["archdir"])
++    puts RbConfig::CONFIG["rubyhdrdir"] || RbConfig::CONFIG["archdir"]
++when "arch"
++    puts RbConfig::CONFIG["arch"]
+ when "lib"
+-    puts Config::expand(CONFIG["libdir"])
++    puts RbConfig::CONFIG["libdir"]
+ when "archsitelib"
+-    puts Config::expand(CONFIG["sitearchdir"])
++    puts RbConfig::CONFIG["vendorarchdir"]
+ when "sitelib"
+-    puts Config::expand(CONFIG["sitedir"])
++    puts RbConfig::CONFIG["vendorlibdir"]
+ end
+ 
 --- origsrc/graphviz-2.26.3/tclpkg/Makefile.am	2009-06-02 20:10:58.000000000 -0500
 +++ src/graphviz-2.26.3/tclpkg/Makefile.am	2010-07-02 15:18:27.527761700 -0500
 @@ -22,7 +22,7 @@ if WITH_TCL

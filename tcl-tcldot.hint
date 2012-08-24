@@ -1,9 +1,0 @@
-category: Devel Graphics Tcl
-requires: libcdt5 libgd2 libgraph5 libgvc6 libpathplan4 libstdc++6 tcl
-external-source: graphviz
-sdesc: "Graph visualization tools (Tcl bindings)"
-ldesc: "The Graphviz layout programs take descriptions of graphs in a
-simple text language, and make diagrams in several useful formats such
-as images and SVG for web pages, Postscript for inclusion in PDF or
-other documents; or display in an interactive graph browser. (Graphviz
-also supports GXL, an XML dialect.)"
