@@ -1,5 +1,8 @@
-inherit java lua mono ocaml perl php python ruby tcl
+inherit lua ocaml perl php python ruby tcl # java mono
 
+NAME="graphviz"
+VERSION=2.30.0
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -10,18 +13,17 @@ HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
 PATCH_URI="
 	2.24-build.patch
-	2.26-bindings.patch
+	2.30-bindings.patch
 	2.18-doxygen.patch
 	2.24-vmalloc.patch
-	2.28-automake.patch
 "
 
 gvlibdir="/usr/lib/${PN}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
 PKG_NAMES="${PN} ${PN}-demo gvedit libgvc6 libgvc-devel
-           libcdt5 libcgraph6 libgraph5 libgvpr2 libpathplan4 libxdot4
-           guile-gv java-gv lua-gv mono-gv-sharp ocaml-gv perl-gv php-gv
+           libcdt5 libcgraph6 libgvpr2 libpathplan4 libxdot4
+           guile-gv lua-gv ocaml-gv perl-gv php-gv
            python-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
@@ -42,8 +44,6 @@ libcdt5_SUMMARY="GraphViz container datatype library (runtime)"
 libcdt5_CONTENTS="usr/bin/cygcdt-5.dll"
 libcgraph6_SUMMARY="GraphViz cgraph library (runtime)"
 libcgraph6_CONTENTS="usr/bin/cygcgraph-6.dll"
-libgraph5_SUMMARY="GraphViz graph library (runtime)"
-libgraph5_CONTENTS="usr/bin/cyggraph-5.dll"
 libgvpr2_SUMMARY="GraphViz pattern scanning library (runtime)"
 libgvpr2_CONTENTS="usr/bin/cyggvpr-2.dll"
 libpathplan4_SUMMARY="GraphViz bezier path library (runtime)"
@@ -82,7 +82,7 @@ tcl_tcldot_CATEGORY="Tcl"
 tcl_tcldot_SUMMARY="GraphViz context library (Tcl bindings)"
 tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
 
-DIFF_EXCLUDES="Doxyfile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
+DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
 
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
@@ -96,7 +96,7 @@ CYGCONF_ARGS="
 	--without-gtkglext
 
 	--enable-guile
-	--enable-java
+	--disable-java
 	--enable-lua
 	--disable-ocaml
 	--enable-perl
@@ -104,7 +104,7 @@ CYGCONF_ARGS="
 	--enable-python
 	--disable-r
 	--enable-ruby
-	--enable-sharp
+	--disable-sharp
 	--enable-tcl
 "
 
