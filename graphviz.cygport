@@ -182,6 +182,7 @@ src_install() {
 	dodir /etc/postinstall /etc/preremove
 	echo "rm -f ${gvlibdir}/config${gvpluginabi}" >> ${D}/etc/preremove/libgvc6.sh
 	echo "/usr/sbin/libgvc6-config -c" >> ${D}/etc/postinstall/libgvc6.sh
+	chmod +x ${D}/etc/*/*.sh
 
 	newicon ${S}/cmd/gvedit/images/icon.png gvedit.png
 	# categories from KGraphViewer
