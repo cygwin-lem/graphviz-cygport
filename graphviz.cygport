@@ -22,7 +22,7 @@ gvlibdir="/usr/lib/${PN}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
 PKG_NAMES="${PN} ${PN}-demo gvedit libgvc6 libgvc-devel
-           libcdt5 libcgraph6 libgvpr2 libpathplan4 libxdot4
+           libcdt5 libcgraph6 libgraph5 libgvpr2 libpathplan4 libxdot4
            guile-gv lua-gv ocaml-gv perl-gv php-gv
            python-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
@@ -44,6 +44,8 @@ libcdt5_SUMMARY="GraphViz container datatype library (runtime)"
 libcdt5_CONTENTS="usr/bin/cygcdt-5.dll"
 libcgraph6_SUMMARY="GraphViz cgraph library (runtime)"
 libcgraph6_CONTENTS="usr/bin/cygcgraph-6.dll"
+libgraph5_SUMMARY="GraphViz graph library (runtime)"
+libgraph5_CONTENTS="usr/bin/cyggraph-5.dll"
 libgvpr2_SUMMARY="GraphViz pattern scanning library (runtime)"
 libgvpr2_CONTENTS="usr/bin/cyggvpr-2.dll"
 libpathplan4_SUMMARY="GraphViz bezier path library (runtime)"
@@ -84,11 +86,13 @@ tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man
 
 DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
 
+# cgraph: current libgvc-dependent pkgs use libgraph API
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
 	--disable-static
 	--disable-rpath
 
+	--without-cgraph
 	--without-devil
 	--without-glade
 	--without-gtk
