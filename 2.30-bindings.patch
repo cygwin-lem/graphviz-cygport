@@ -68,16 +68,6 @@
          save_CPPFLAGS=$CPPFLAGS
          CPPFLAGS="$CPPFLAGS $PHP_INCLUDES"
          AC_CHECK_HEADER(php.h,,[
-@@ -1548,7 +1548,8 @@ else
-         if test "x$RUBY" = "x"; then
- 	  use_ruby="No (ruby not available)"
-         else
--          RUBY_CFLAGS="-I`$RUBY $srcdir/config/config_ruby.rb archdir`"
-+          RUBY_CFLAGS="-I`$RUBY $srcdir/config/config_ruby.rb rubyhdrdir`"
-+          RUBY_CFLAGS="$RUBY_CFLAGS $RUBY_CFLAGS/`$RUBY $srcdir/config/config_ruby.rb arch`"
- 	  # hack for powerpc-darwin8 (10.4)
- 	  if test "x$DARWIN" = "xyes"; then
- 	    RUBY_CFLAGS=`echo $RUBY_CFLAGS | sed 's/powerpc/universal/'`
 --- origsrc/graphviz-2.30.0/tclpkg/Makefile.am	2013-01-13 21:11:21.000000000 -0600
 +++ src/graphviz-2.30.0/tclpkg/Makefile.am	2013-01-15 02:33:03.858370300 -0600
 @@ -25,7 +25,7 @@ if WITH_TCL
