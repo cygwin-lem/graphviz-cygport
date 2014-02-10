@@ -1,7 +1,7 @@
-inherit lua ${ARCH_i686+ocaml} perl php python ruby tcl # java mono
+inherit lua ocaml perl php python ruby tcl # java mono
 
 NAME="graphviz"
-VERSION=2.30.1
+VERSION=2.36.0
 RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
@@ -10,20 +10,20 @@ simple text language, and make diagrams in several useful formats such as
 images and SVG for web pages, Postscript for inclusion in PDF or other
 documents; or display in an interactive graph browser."
 HOMEPAGE="http://www.graphviz.org/"
-SRC_URI="http://www.graphviz.org/pub/${PN}/ARCHIVE/${P}.tar.gz"
+SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
 PATCH_URI="
-	2.24-build.patch
-	2.30-bindings.patch
-	2.18-doxygen.patch
-	2.24-vmalloc.patch
+	2.36-build.patch
+	2.36-bindings.patch
+	2.36-doxygen.patch
+	2.36-vmalloc.patch
 "
 
-gvlibdir="/usr/lib/${PN}-${PV[1]}.${PV[2]}"
+gvlibdir="/usr/lib/${NAME}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
-PKG_NAMES="${PN} ${PN}-demo gvedit libgvc6 libgvc-devel
-           libcdt5 libcgraph6 libgraph5 libgvpr2 libpathplan4 libxdot4
-           guile-gv lua-gv ${ARCH_i686+ocaml-gv} perl-gv php-gv
+PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
+           libcdt5 libcgraph6 libgvpr2 libpathplan4 libxdot4
+           guile-gv lua-gv ocaml-gv perl-gv php-gv
            python-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
@@ -44,8 +44,6 @@ libcdt5_SUMMARY="GraphViz container datatype library (runtime)"
 libcdt5_CONTENTS="usr/bin/cygcdt-5.dll"
 libcgraph6_SUMMARY="GraphViz cgraph library (runtime)"
 libcgraph6_CONTENTS="usr/bin/cygcgraph-6.dll"
-libgraph5_SUMMARY="GraphViz graph library (runtime)"
-libgraph5_CONTENTS="usr/bin/cyggraph-5.dll"
 libgvpr2_SUMMARY="GraphViz pattern scanning library (runtime)"
 libgvpr2_CONTENTS="usr/bin/cyggvpr-2.dll"
 libpathplan4_SUMMARY="GraphViz bezier path library (runtime)"
@@ -86,16 +84,12 @@ tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man
 
 DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
 
-# cgraph: current libgvc-dependent pkgs use libgraph API
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
-	--disable-static
 	--disable-rpath
 
-	--without-cgraph
 	--without-devil
 	--without-glade
-	--without-gtk
 	--without-gtkgl
 	--without-gtkglext
 
@@ -115,10 +109,10 @@ CYGCONF_ARGS="
 pkgdirargs="
 	pkgguiledir=/usr/lib
 	pkglibdir=${gvlibdir}
-	txtdir=/usr/share/doc/${PN}
-	htmldir=/usr/share/doc/${PN}/html
-	schemadir=/usr/share/doc/${PN}/html/schema
-	pdfdir=/usr/share/doc/${PN}/pdf
+	txtdir=/usr/share/doc/${NAME}
+	htmldir=/usr/share/doc/${NAME}/html
+	schemadir=/usr/share/doc/${NAME}/html/schema
+	pdfdir=/usr/share/doc/${NAME}/pdf
 "
 
 src_compile() {
@@ -154,7 +148,9 @@ src_compile() {
 	if inherited ocaml
 	then
 		make libgv_ocaml.la gv.a
-		ocamlmklib -v -o gv .libs/libgv_ocaml_la-gv*.o -L${B}/lib/gvc/.libs -L${B}/lib/graph/.libs -L${B}/lib/cdt/.libs -lgvc -lgraph -lcdt -lstdc++
+		ocamlmklib -v -o gv .libs/libgv_ocaml_la-gv*.o -L${B}/lib/gvc/.libs -L${B}/lib/cgraph/.libs -L${B}/lib/cdt/.libs -lgvc -lcgraph -lcdt -lstdc++
+		# stublib is only available on i686
+		ocamlc -a ${ARCH_i686+-dllib gv.so} -o gv.cma swig.cmo gv.cmo
 	fi
 }
 
@@ -226,9 +222,12 @@ src_install() {
 	if inherited ocaml
 	then
 		pushd ${B}/tclpkg/gv
-		exeinto ${OCAML_LIBDIR}/stublibs
-		doexe dllgv.so
-		echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
+		if defined ARCH_i686
+		then
+			exeinto ${OCAML_LIBDIR}/stublibs
+			doexe dllgv.so
+			echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
+		fi
 		insinto ${OCAML_LIBDIR}/gv
 		doins gv.{a,cma,cmi,cmxa,mli}
 		echo > ${D}${OCAML_LIBDIR}/gv/META <<_EOF

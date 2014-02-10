@@ -3,11 +3,11 @@
 
 http://cygwin.com/ml/cygwin/2009-11/msg00114.html
 
---- origsrc/graphviz-2.24.0/lib/vmalloc/features/vmalloc	2004-12-22 22:04:28.000000000 -0600
-+++ src/graphviz-2.24.0/lib/vmalloc/features/vmalloc	2009-11-05 15:41:13.941554200 -0600
-@@ -18,17 +18,18 @@ lib mallinfo
- lib mstats
+--- origsrc/graphviz-2.36.0/lib/vmalloc/features/vmalloc	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/lib/vmalloc/features/vmalloc	2014-02-09 20:56:30.200892800 -0600
+@@ -19,17 +19,18 @@ lib mstats
  hdr alloca
+ hdr dlfcn
  
 -std	malloc note{ stuck with standard malloc }end noexecute{
 +std	malloc note{ stuck with standard malloc }end execute{
@@ -28,22 +28,27 @@ http://cygwin.com/ml/cygwin/2009-11/msg00114.html
  }end
  
  lib alloca note{ alloca exists }end compile{
-@@ -44,17 +45,18 @@ mal alloca note{ alloca is based on mall
- 	#if _hdr_alloca
- 	#include	<alloca.h>
- 	#endif
+@@ -48,6 +49,7 @@ mal alloca note{ alloca is based on mall
+ 	#if _hdr_dlfcn
+ 	#include <dlfcn.h>
+ 	volatile int testing_alloca = 0;
 +	static int based_on_malloc = 1;
+ 	#endif
  	#if _STD_
  	void* malloc(unsigned int size)
- 	#else
- 	void* malloc(size) unsigned int size;
+@@ -60,7 +62,7 @@ mal alloca note{ alloca is based on mall
+ 			return ((void *(*)(unsigned int)) dlsym(RTLD_NEXT, "malloc"))(size);
+ 		}
  	#endif
--	{	exit(0);
-+	{	based_on_malloc = 0;
+-		exit(0);
++		based_on_malloc = 0;
  		return 0;
  	}
  	main()
- 	{	alloca(10);
+@@ -72,7 +74,7 @@ mal alloca note{ alloca is based on mall
+ 	#if _hdr_dlfcn
+ 		testing_alloca = 0;
+ 	#endif
 -		return 1;
 +		return based_on_malloc;
  	}

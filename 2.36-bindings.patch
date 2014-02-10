@@ -1,5 +1,5 @@
---- origsrc/graphviz-2.30.0/config/config_perl.pl	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/config/config_perl.pl	2013-01-15 02:29:21.610648400 -0600
+--- origsrc/graphviz-2.36.0/config/config_perl.pl	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/config/config_perl.pl	2014-02-09 21:01:11.880003900 -0600
 @@ -4,7 +4,7 @@ if ($ARGV[0] eq "PERL_LIBS") {
  	$archlib = $Config{archlib};
  	$libperl = $Config{libperl};
@@ -9,39 +9,24 @@
  }
  if ($ARGV[0] eq "PERL_INCLUDES") {
  	$archlib = $Config{archlib};
---- origsrc/graphviz-2.30.0/config/config_ruby.rb	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/config/config_ruby.rb	2013-01-15 02:31:33.057840100 -0600
-@@ -1,18 +1,20 @@
- require 'rbconfig'
- 
--CONFIG = Config::MAKEFILE_CONFIG
-+CONFIG = RbConfig::MAKEFILE_CONFIG
+--- origsrc/graphviz-2.36.0/config/config_ruby.rb	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/config/config_ruby.rb	2014-02-09 20:59:34.728447200 -0600
+@@ -4,8 +4,10 @@ CONFIG = RbConfig::MAKEFILE_CONFIG
  
  
  case ARGV[0]
 -when "archdir"
--    puts Config::expand(CONFIG["archdir"])
+-    puts RbConfig::expand(CONFIG["archdir"])
 +when "rubyhdrdir"
-+    puts RbConfig::CONFIG["rubyhdrdir"] || RbConfig::CONFIG["archdir"]
++    puts RbConfig::expand(CONFIG["rubyhdrdir"]) || RbConfig::expand(CONFIG["archdir"])
 +when "arch"
-+    puts RbConfig::CONFIG["arch"]
++    puts RbConfig::expand(CONFIG["arch"])
  when "lib"
--    puts Config::expand(CONFIG["libdir"])
-+    puts RbConfig::CONFIG["libdir"]
+     puts RbConfig::expand(CONFIG["libdir"])
  when "vendorarchdir"
--    puts Config::expand(CONFIG["vendorarchdir"])
-+    puts RbConfig::CONFIG["vendorarchdir"]
- when "sitearchdir"
--    puts Config::expand(CONFIG["sitearchdir"])
-+    puts RbConfig::CONFIG["sitearchdir"]
- when "sitelib"
--    puts Config::expand(CONFIG["sitedir"])
-+    puts RbConfig::CONFIG["sitedir"]
- end
- 
---- origsrc/graphviz-2.30.0/configure.ac	2013-01-15 02:26:10.330859000 -0600
-+++ src/graphviz-2.30.0/configure.ac	2013-01-15 02:32:30.109584800 -0600
-@@ -83,7 +83,7 @@ AC_SUBST([GVPLUGIN_VERSION])
+--- origsrc/graphviz-2.36.0/configure.ac	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/configure.ac	2014-02-09 21:01:11.886004300 -0600
+@@ -88,7 +88,7 @@ AC_SUBST([GVPLUGIN_VERSION])
  GRAPHVIZ_VERSION_BUILD=0
  GRAPHVIZ_VERSION_REVISION=0
  case "${host_os}" in
@@ -50,16 +35,18 @@
  	# Windows version numbers
  	# For the build number: months since Jan 2000, day of month from the timestamp
  	# For the revision number: hour, minute from the timestamp
-@@ -706,7 +706,7 @@ else
+@@ -716,8 +716,8 @@ else
+         if test "x$GUILE" = "x"; then
  	  use_guile="No (guile is too old)"
          else
-           GUILE_INCLUDES=
--          GUILE_LIBS=
-+          GUILE_LIBS=-lguile
+-	  GUILE_INCLUDES=$(guile-config compile)
+-	  GUILE_LIBS=$(guile-config link)
++	  GUILE_INCLUDES=$(guile-config-2.0 compile)
++	  GUILE_LIBS=$(guile-config-2.0 link)
  	  # don't die if PKG_CHECK_MODULES not available - el4, el5
            PKG_CHECK_MODULES([GUILE],
- 		[guile >= "$GUILE_VERSION_MAJOR.$GUILE_VERSION_MINOR"],
-@@ -1087,7 +1087,7 @@ else
+ 		[guile-2.0 >= "$GUILE_VERSION_MAJOR.$GUILE_VERSION_MINOR"],
+@@ -1107,7 +1107,7 @@ else
          fi
          PHP_INSTALL_DIR="/usr/lib${LIBPOSTFIX}/php/modules"
          PHP_INSTALL_DATADIR="/usr/share/php"
@@ -68,8 +55,8 @@
          save_CPPFLAGS=$CPPFLAGS
          CPPFLAGS="$CPPFLAGS $PHP_INCLUDES"
          AC_CHECK_HEADER(php.h,,[
---- origsrc/graphviz-2.30.0/tclpkg/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/Makefile.am	2013-01-15 02:33:03.858370300 -0600
+--- origsrc/graphviz-2.36.0/tclpkg/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/Makefile.am	2014-02-09 21:01:11.890004500 -0600
 @@ -25,7 +25,7 @@ if WITH_TCL
  pkgindex_DATA = pkgIndex.tcl
  endif
@@ -79,8 +66,17 @@
  
  pkgIndex.tcl: @TCL_PKGINDEX@ @TCL_PKGINDEX_GD@ @TCL_PKGINDEX_SWIG@ @TK_PKGINDEX@
  	echo "# end" >end
---- origsrc/graphviz-2.30.0/tclpkg/gdtclft/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/gdtclft/Makefile.am	2013-01-15 02:34:02.357798800 -0600
+@@ -36,7 +36,7 @@ pkgIndex.tcl: @TCL_PKGINDEX@ @TCL_PKGIND
+ # separate step, with soft failures, so that a developer can do:
+ #    ./configure --prefix=$HOME/graphviz; make; make install
+ # without root priviledges.
+-install-data-hook:
++install-bindings:
+ if WITH_LUA
+ 	-mkdir -p $(DESTDIR)@LUA_INSTALL_DIR@;
+ 	if test -w $(DESTDIR)@LUA_INSTALL_DIR@; then \
+--- origsrc/graphviz-2.36.0/tclpkg/gdtclft/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/gdtclft/Makefile.am	2014-02-09 21:01:11.892004600 -0600
 @@ -11,8 +11,6 @@ AM_CPPFLAGS = \
  	-I$(top_srcdir)/tclpkg/tclhandle \
  	@GD_INCLUDES@ @TCL_INCLUDES@
@@ -105,9 +101,9 @@
  	$(GD_LIBS)
  
  if WITH_TCL
---- origsrc/graphviz-2.30.0/tclpkg/gv/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/gv/Makefile.am	2013-01-15 02:34:39.243982700 -0600
-@@ -20,8 +20,6 @@ AM_CPPFLAGS = \
+--- origsrc/graphviz-2.36.0/tclpkg/gv/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/gv/Makefile.am	2014-02-09 21:01:11.897004900 -0600
+@@ -13,8 +13,6 @@ AM_CPPFLAGS = \
  	-I$(top_srcdir)/lib/cdt \
  	-I$(top_srcdir)/lib/pathplan
  
@@ -115,8 +111,8 @@
 -
  BASESOURCES = gv.cpp gv.i gv_builtins.c
  BASELIBS = $(top_builddir)/lib/gvc/libgvc.la \
- 	$(top_builddir)/lib/$(GRAPH)/lib$(GRAPH).la \
-@@ -256,9 +254,9 @@ pkgtcldir = $(pkglibdir)/tcl
+ 	$(top_builddir)/lib/cgraph/libcgraph.la \
+@@ -260,9 +258,9 @@ pkgtcldir = $(pkglibdir)/tcl
  TCL_data = 
  nodist_libgv_tcl_la_SOURCES = gv_tcl.cpp $(TCL_data)
  libgv_tcl_la_SOURCES = $(BASESOURCES) gv_tcl_init.c
@@ -128,9 +124,9 @@
  # $(TCL_data): gv_tcl.cpp
  gv_tcl.cpp: gv.i
  	$(SWIG) -c++ -tcl -namespace -o gv_tcl.cpp $(srcdir)/gv.i
---- origsrc/graphviz-2.30.0/tclpkg/tcldot/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/tcldot/Makefile.am	2013-01-15 02:35:31.774653300 -0600
-@@ -26,8 +26,6 @@ AM_CPPFLAGS = \
+--- origsrc/graphviz-2.36.0/tclpkg/tcldot/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/tcldot/Makefile.am	2014-02-09 21:01:11.901005100 -0600
+@@ -20,8 +20,6 @@ AM_CPPFLAGS = \
  	-I$(top_srcdir)/lib/cdt \
  	-I$(top_srcdir)/lib/pathplan $(TCLHANDLE_INCLUDES) $(GD_INCLUDES) $(TCL_INCLUDES)
  
@@ -139,7 +135,7 @@
  AM_CFLAGS = $(TCL_CFLAGS)
  
  man = tcldot.3tcl
-@@ -57,10 +55,10 @@ libtcldot_la_SOURCES = \
+@@ -51,10 +49,10 @@ libtcldot_la_SOURCES = \
  	tcldot-io.c \
  	no_builtins.c $(GDTCLFT)
  libtcldot_la_CPPFLAGS = $(AM_CPPFLAGS) -DDEMAND_LOADING=1
@@ -150,9 +146,9 @@
 -	$(top_builddir)/tclpkg/tclstubs/libtclstubs_C.la \
 +	$(TCL_STUB_LIB_SPEC) \
  	$(top_builddir)/lib/cdt/libcdt.la \
- 	$(top_builddir)/lib/$(GRAPH)/lib$(GRAPH).la \
+ 	$(top_builddir)/lib/cgraph/libcgraph.la \
  	$(top_builddir)/lib/pathplan/libpathplan_C.la \
-@@ -85,7 +83,7 @@ libtcldot_builtin_la_SOURCES = \
+@@ -79,7 +77,7 @@ libtcldot_builtin_la_SOURCES = \
  	tcldot-io.c \
  	tcldot_builtins.c $(GDTCLFT)
  libtcldot_builtin_la_CPPFLAGS = $(AM_CPPFLAGS) -DDEMAND_LOADING=1
@@ -161,8 +157,8 @@
  
  libtcldot_builtin_la_LIBADD = $(TCLHANDLE_LIBS) \
  	$(top_builddir)/plugin/dot_layout/libgvplugin_dot_layout_C.la \
-@@ -95,7 +93,7 @@ libtcldot_builtin_la_LIBADD = $(TCLHANDL
- 	$(top_builddir)/lib/$(GRAPH)/lib$(GRAPH)_C.la \
+@@ -89,7 +87,7 @@ libtcldot_builtin_la_LIBADD = $(TCLHANDL
+ 	$(top_builddir)/lib/cgraph/libcgraph_C.la \
  	$(top_builddir)/lib/cdt/libcdt_C.la \
  	$(top_builddir)/lib/pathplan/libpathplan_C.la \
 -	$(top_builddir)/tclpkg/tclstubs/libtclstubs_C.la $(GTS_LIBS)
@@ -170,8 +166,8 @@
  
  if WITH_PANGOCAIRO
  libtcldot_builtin_la_LIBADD += $(top_builddir)/plugin/pango/libgvplugin_pango_C.la $(PANGOCAIRO_LIBS) $(PANGOFT2_LIBS)
---- origsrc/graphviz-2.30.0/tclpkg/tclpathplan/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/tclpathplan/Makefile.am	2013-01-15 02:35:53.969471700 -0600
+--- origsrc/graphviz-2.36.0/tclpkg/tclpathplan/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/tclpathplan/Makefile.am	2014-02-09 21:01:11.904005300 -0600
 @@ -18,10 +18,10 @@ pkgtcl_LTLIBRARIES = libtclplan.la
  endif
  
@@ -185,8 +181,8 @@
  	$(top_builddir)/lib/pathplan/libpathplan.la $(MATH_LIBS)
  
  if WITH_TCL
---- origsrc/graphviz-2.30.0/tclpkg/tkspline/Makefile.am	2013-01-13 21:11:21.000000000 -0600
-+++ src/graphviz-2.30.0/tclpkg/tkspline/Makefile.am	2013-01-15 02:36:46.088590000 -0600
+--- origsrc/graphviz-2.36.0/tclpkg/tkspline/Makefile.am	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/tclpkg/tkspline/Makefile.am	2014-02-09 21:01:11.906005400 -0600
 @@ -26,11 +26,10 @@ man_MANS = $(man)
  pdf_DATA = $(pdf)
  endif

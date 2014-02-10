@@ -1,7 +1,7 @@
---- origsrc/graphviz-2.18/Doxyfile.in	2007-08-31 18:12:40.000000000 -0500
-+++ src/graphviz-2.18/Doxyfile.in	2008-03-20 14:32:27.265625000 -0500
-@@ -462,23 +462,23 @@
- # directories like "/usr/src/myproject". Separate the files or directories 
+--- origsrc/graphviz-2.36.0/Doxyfile.in	2014-01-11 16:59:44.000000000 -0600
++++ src/graphviz-2.36.0/Doxyfile.in	2014-02-09 20:51:44.744565600 -0600
+@@ -568,23 +568,23 @@ WARN_LOGFILE           =
+ # directories like "/usr/src/myproject". Separate the files or directories
  # with spaces.
  
 -INPUT                  = cmd/dot \
@@ -39,5 +39,5 @@
 +                         @top_srcdir@/plugin/neato_layout \
 +                         @top_srcdir@/tclpkg/gv
  
- # This tag can be used to specify the character encoding of the source files that 
- # doxygen parses. Internally doxygen uses the UTF-8 encoding, which is also the default 
+ # This tag can be used to specify the character encoding of the source files
+ # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
