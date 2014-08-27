@@ -35,17 +35,6 @@
  	# Windows version numbers
  	# For the build number: months since Jan 2000, day of month from the timestamp
  	# For the revision number: hour, minute from the timestamp
-@@ -716,8 +716,8 @@ else
-         if test "x$GUILE" = "x"; then
- 	  use_guile="No (guile is too old)"
-         else
--	  GUILE_INCLUDES=$(guile-config compile)
--	  GUILE_LIBS=$(guile-config link)
-+	  GUILE_INCLUDES=$(guile-config-2.0 compile)
-+	  GUILE_LIBS=$(guile-config-2.0 link)
- 	  # don't die if PKG_CHECK_MODULES not available - el4, el5
-           PKG_CHECK_MODULES([GUILE],
- 		[guile-2.0 >= "$GUILE_VERSION_MAJOR.$GUILE_VERSION_MINOR"],
 @@ -1107,7 +1107,7 @@ else
          fi
          PHP_INSTALL_DIR="/usr/lib${LIBPOSTFIX}/php/modules"

@@ -1,8 +1,8 @@
 inherit lua ocaml perl php python ruby tcl # java mono
 
 NAME="graphviz"
-VERSION=2.36.0
-RELEASE=2
+VERSION=2.38.0
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -12,7 +12,7 @@ documents; or display in an interactive graph browser."
 HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
 PATCH_URI="
-	2.36-build.patch
+	2.38-build.patch
 	2.36-bindings.patch
 	2.36-doxygen.patch
 	2.36-vmalloc.patch

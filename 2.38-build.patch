@@ -1,5 +1,15 @@
---- origsrc/graphviz-2.36.0/cmd/tools/Makefile.am	2014-01-11 16:59:44.000000000 -0600
-+++ src/graphviz-2.36.0/cmd/tools/Makefile.am	2014-02-09 21:03:49.958045500 -0600
+--- origsrc/graphviz-2.38.0/cmd/edgepaint/Makefile.am	2014-04-13 15:40:25.000000000 -0500
++++ src/graphviz-2.38.0/cmd/edgepaint/Makefile.am	2014-08-26 20:21:51.125135900 -0500
+@@ -5,6 +5,7 @@ pdfdir = $(pkgdatadir)/doc/pdf
+ 
+ AM_CPPFLAGS = \
+ 	-I$(top_srcdir) \
++	-I$(top_srcdir)/lib/common \
+ 	-I$(top_srcdir)/lib/sparse \
+ 	-I$(top_srcdir)/lib/sfdpgen \
+ 	-I$(top_srcdir)/lib/edgepaint \
+--- origsrc/graphviz-2.38.0/cmd/tools/Makefile.am	2014-08-26 20:25:41.700415200 -0500
++++ src/graphviz-2.38.0/cmd/tools/Makefile.am	2014-08-26 19:15:46.000000000 -0500
 @@ -145,11 +145,12 @@ gvpack_SOURCES = gvpack.c
  gvpack_CPPFLAGS = $(AM_CPPFLAGS) -DDEMAND_LOADING=0
  
@@ -15,8 +25,8 @@
  
  if ENABLE_STATIC
  gvpack_static_SOURCES = gvpack.c
---- origsrc/graphviz-2.36.0/configure.ac	2014-02-09 21:01:40.557644200 -0600
-+++ src/graphviz-2.36.0/configure.ac	2014-02-09 21:03:49.984047000 -0600
+--- origsrc/graphviz-2.38.0/configure.ac	2014-08-26 20:25:41.720417700 -0500
++++ src/graphviz-2.38.0/configure.ac	2014-08-26 19:15:47.765353100 -0500
 @@ -138,10 +138,9 @@ case "${host_os}" in
  	;;
    *cygwin* )
@@ -49,8 +59,8 @@
  			AC_DEFINE_UNQUOTED(GVDLL,1, [Define for DLLs on Windows.])
  		;;
  	esac
---- origsrc/graphviz-2.36.0/lib/gvpr/Makefile.am	2014-01-11 16:59:44.000000000 -0600
-+++ src/graphviz-2.36.0/lib/gvpr/Makefile.am	2014-02-09 21:03:50.003048100 -0600
+--- origsrc/graphviz-2.38.0/lib/gvpr/Makefile.am	2014-08-26 20:25:41.723418100 -0500
++++ src/graphviz-2.38.0/lib/gvpr/Makefile.am	2014-08-26 19:15:46.000000000 -0500
 @@ -52,7 +52,7 @@ libgvpr_la_DEPENDENCIES = $(libgvpr_C_la
  
  mkdefs_SOURCES = mkdefs.c
@@ -59,4 +69,4 @@
 +gdefs.h: $(top_srcdir)/lib/gvpr/gprdata mkdefs$(EXEEXT)
  	./mkdefs gdefs.h < $(top_srcdir)/lib/gvpr/gprdata
  
- EXTRA_DIST = $(man_MANS) $(pdf_DATA) Makefile.old gprdata mkdefs.c gdefs.h trie.c gvprlib.vcproj
+ EXTRA_DIST = $(man_MANS) $(pdf_DATA) gprdata mkdefs.c gdefs.h trie.c gvprlib.vcproj
