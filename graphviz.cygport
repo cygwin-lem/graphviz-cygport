@@ -2,7 +2,7 @@ inherit lua ocaml perl php python ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.38.0
-RELEASE=4
+RELEASE=5
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -83,7 +83,7 @@ tcl_tcldot_CATEGORY="Tcl"
 tcl_tcldot_SUMMARY="GraphViz context library (Tcl bindings)"
 tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
 
-DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs argz.m4 ltdl.m4 macosx"
+DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs ltargz.m4 ltdl.m4 macosx"
 
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
