@@ -2,7 +2,7 @@ inherit lua ocaml perl php python ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.38.0
-RELEASE=6
+RELEASE=7
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
