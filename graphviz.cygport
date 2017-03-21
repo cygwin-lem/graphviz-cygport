@@ -1,8 +1,8 @@
-inherit lua ocaml perl php python ruby tcl # java mono
+inherit lua perl php python2 ruby tcl # java mono ocaml
 
 NAME="graphviz"
-VERSION=2.38.0
-RELEASE=7
+VERSION=2.40.1
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -12,20 +12,21 @@ documents; or display in an interactive graph browser."
 HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/graphviz.git/plain/graphviz-2.38.0-format-string.patch
-	2.38-build.patch
-	2.36-bindings.patch
-	2.36-doxygen.patch
-	2.36-vmalloc.patch
+	http://pkgs.fedoraproject.org/cgit/rpms/graphviz.git/plain/graphviz-2.40.1-visio.patch
+	2.40-bindings.patch
+	2.40-cygwin-unix.patch
+	2.40-doxygen-vpath.patch
+	2.40-no-undefined.patch
+	2.40-vmalloc.patch
 "
 
 gvlibdir="/usr/lib/${NAME}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
-           libcdt5 libcgraph6 libgvpr2 libpathplan4 libxdot4
-           guile-gv lua-gv ocaml-gv perl-gv php-gv
-           python-gv ruby-gv tcl-tcldot"
+           libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
+           lua-gv perl-gv php-gv
+           python2-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
 graphviz_demo_SUMMARY="${SUMMARY} (sample scripts)"
@@ -47,6 +48,8 @@ libcgraph6_SUMMARY="GraphViz cgraph library (runtime)"
 libcgraph6_CONTENTS="usr/bin/cygcgraph-6.dll"
 libgvpr2_SUMMARY="GraphViz pattern scanning library (runtime)"
 libgvpr2_CONTENTS="usr/bin/cyggvpr-2.dll"
+liblab_gamut1_SUMMARY="GraphViz color labeling library (runtime)"
+liblab_gamut1_CONTENTS="usr/bin/cyglab_gamut-1.dll"
 libpathplan4_SUMMARY="GraphViz bezier path library (runtime)"
 libpathplan4_CONTENTS="usr/bin/cygpathplan-4.dll"
 libxdot4_SUMMARY="GraphViz xdot parser library (runtime)"
@@ -73,18 +76,20 @@ perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
 php_gv_CATEGORY="PHP"
 php_gv_SUMMARY="GraphViz context library (PHP bindings)"
 php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
-python_gv_CATEGORY="Python"
-python_gv_SUMMARY="GraphViz context library (Python bindings)"
-python_gv_CONTENTS="${PYTHON_SITELIB#/} usr/share/man/man3/python*"
+python2_gv_CATEGORY="Python"
+python2_gv_SUMMARY="GraphViz context library (Python bindings)"
+python2_gv_OBSOLETES="python-gv"
+python2_gv_CONTENTS="${PYTHON2_SITELIB#/} usr/share/man/man3/python*"
 ruby_gv_CATEGORY="Ruby"
 ruby_gv_SUMMARY="GraphViz context library (Ruby bindings)"
 ruby_gv_CONTENTS="${RUBY_VENDORARCH#/} usr/share/man/man3/ruby*"
 tcl_tcldot_CATEGORY="Tcl"
 tcl_tcldot_SUMMARY="GraphViz context library (Tcl bindings)"
-tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl* usr/share/man/man3/tk*"
+tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl*"
 
 DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs ltargz.m4 ltdl.m4 macosx"
 
+# guile requires 2.0
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
 	--disable-rpath
@@ -94,7 +99,7 @@ CYGCONF_ARGS="
 	--without-gtkgl
 	--without-gtkglext
 
-	--enable-guile
+	--disable-guile
 	--disable-java
 	--enable-lua
 	--disable-ocaml
@@ -150,8 +155,7 @@ src_compile() {
 	then
 		make libgv_ocaml.la gv.a
 		ocamlmklib -v -o gv .libs/libgv_ocaml_la-gv*.o -L${B}/lib/gvc/.libs -L${B}/lib/cgraph/.libs -L${B}/lib/cdt/.libs -lgvc -lcgraph -lcdt -lstdc++
-		# stublib is only available on i686
-		ocamlc -a ${ARCH_i686+-dllib gv.so} -o gv.cma swig.cmo gv.cmo
+		ocamlc -a -dllib gv.so -o gv.cma swig.cmo gv.cmo
 	fi
 }
 
@@ -249,7 +253,6 @@ _EOF
 		mv perl/gv.pm ${D}${PERL_VENDORARCH}/
 		mv perl/cyggv_perl.dll ${D}${PERL_VENDORARCH}/gv.dll
 		rm -fr perl/
-		perl_postinst
 	fi
 
 	if inherited php
@@ -262,13 +265,12 @@ _EOF
 		php_postinst
 	fi
 
-	if inherited python
+	if inherited python2
 	then
-		_reset_dir ${PYTHON_SITELIB}
-		mv python/cyggv_python.dll ${D}${PYTHON_SITELIB}/_gv.dll
-		mv python/gv.py ${D}${PYTHON_SITELIB}/
+		_reset_dir ${PYTHON2_SITELIB}
+		mv python/cyggv_python.dll ${D}${PYTHON2_SITELIB}/_gv.dll
+		mv python/gv.py ${D}${PYTHON2_SITELIB}/
 		rm -fr python/
-		python_optimize
 	fi
 
 	if inherited ruby
