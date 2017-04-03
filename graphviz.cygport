@@ -1,8 +1,8 @@
-inherit lua perl php python2 ruby tcl # java mono ocaml
+inherit lua perl php python2 python3 ocaml ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.40.1
-RELEASE=1
+RELEASE=2
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -13,7 +13,12 @@ HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
 PATCH_URI="
 	http://pkgs.fedoraproject.org/cgit/rpms/graphviz.git/plain/graphviz-2.40.1-visio.patch
-	2.40-bindings.patch
+	2.40-bindings-perl.patch
+	2.40-bindings-php.patch
+	2.40-bindings-python2.patch
+	2.40-bindings-python3.patch
+	2.40-bindings-ruby.patch
+	2.40-bindings-tcl.patch
 	2.40-cygwin-unix.patch
 	2.40-doxygen-vpath.patch
 	2.40-no-undefined.patch
@@ -25,8 +30,8 @@ gvpluginabi=6
 
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
            libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
-           lua-gv perl-gv php-gv
-           python2-gv ruby-gv tcl-tcldot"
+           guile-gv lua-gv ocaml-gv perl-gv php-gv
+           python2-gv python3-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
 graphviz_demo_SUMMARY="${SUMMARY} (sample scripts)"
@@ -79,7 +84,10 @@ php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php*
 python2_gv_CATEGORY="Python"
 python2_gv_SUMMARY="GraphViz context library (Python bindings)"
 python2_gv_OBSOLETES="python-gv"
-python2_gv_CONTENTS="${PYTHON2_SITELIB#/} usr/share/man/man3/python*"
+python2_gv_CONTENTS="${PYTHON2_SITELIB#/} usr/share/man/man3/python-*"
+python3_gv_CATEGORY="Python"
+python3_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
+python3_gv_CONTENTS="${PYTHON3_SITELIB#/} usr/share/man/man3/python3-*"
 ruby_gv_CATEGORY="Ruby"
 ruby_gv_SUMMARY="GraphViz context library (Ruby bindings)"
 ruby_gv_CONTENTS="${RUBY_VENDORARCH#/} usr/share/man/man3/ruby*"
@@ -89,7 +97,6 @@ tcl_tcldot_CONTENTS="usr/lib/tcldot${PV}/ usr/share/man/man3/*tcl*"
 
 DIFF_EXCLUDES="Doxyfile Makefile libltdl AssemblyInfo.cs ltargz.m4 ltdl.m4 macosx"
 
-# guile requires 2.0
 # ocaml has to be built manually because of flexdll
 CYGCONF_ARGS="
 	--disable-rpath
@@ -99,13 +106,14 @@ CYGCONF_ARGS="
 	--without-gtkgl
 	--without-gtkglext
 
-	--disable-guile
+	--enable-guile
 	--disable-java
 	--enable-lua
 	--disable-ocaml
 	--enable-perl
 	--enable-php
 	--enable-python
+	--enable-python3
 	--disable-r
 	--enable-ruby
 	--disable-sharp
@@ -227,12 +235,9 @@ src_install() {
 	if inherited ocaml
 	then
 		pushd ${B}/tclpkg/gv
-		if defined ARCH_i686
-		then
-			exeinto ${OCAML_LIBDIR}/stublibs
-			doexe dllgv.so
-			echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
-		fi
+		exeinto ${OCAML_LIBDIR}/stublibs
+		doexe dllgv.so
+		echo gv > ${D}${OCAML_LIBDIR}/stublibs/dllgv.so.owner
 		insinto ${OCAML_LIBDIR}/gv
 		doins gv.{a,cma,cmi,cmxa,mli}
 		echo > ${D}${OCAML_LIBDIR}/gv/META <<_EOF
@@ -271,6 +276,15 @@ _EOF
 		mv python/cyggv_python.dll ${D}${PYTHON2_SITELIB}/_gv.dll
 		mv python/gv.py ${D}${PYTHON2_SITELIB}/
 		rm -fr python/
+	fi
+
+	if inherited python3
+	then
+		_reset_dir ${PYTHON3_SITELIB}
+		mv python3/cyggv_python3.dll ${D}${PYTHON3_SITELIB}/_gv.dll
+		mv python3/gv.py ${D}${PYTHON3_SITELIB}/
+		rm -fr python3/
+		newman ${S}/tclpkg/gv/gv.3python python3-gv.3
 	fi
 
 	if inherited ruby
