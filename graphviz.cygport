@@ -1,8 +1,8 @@
-inherit lua perl php python2 python3 ocaml ruby tcl # java mono
+inherit lua perl php ocaml ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.40.1
-RELEASE=3
+RELEASE=4
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -12,7 +12,8 @@ documents; or display in an interactive graph browser."
 HOMEPAGE="http://www.graphviz.org/"
 SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/rpms/graphviz.git/plain/graphviz-2.40.1-visio.patch
+	https://src.fedoraproject.org/rpms/graphviz/raw/master/f/graphviz-2.40.1-visio.patch
+	2.40-bindings-guile.patch
 	2.40-bindings-perl.patch
 	2.40-bindings-php.patch
 	2.40-bindings-python2.patch
@@ -31,7 +32,7 @@ gvpluginabi=6
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
            libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
            guile-gv lua-gv ocaml-gv perl-gv php-gv
-           python2-gv python3-gv ruby-gv tcl-tcldot"
+           python27-gv python36-gv python37-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
 graphviz_demo_SUMMARY="${SUMMARY} (sample scripts)"
@@ -81,13 +82,17 @@ perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
 php_gv_CATEGORY="PHP"
 php_gv_SUMMARY="GraphViz context library (PHP bindings)"
 php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
-python2_gv_CATEGORY="Python"
-python2_gv_SUMMARY="GraphViz context library (Python bindings)"
-python2_gv_OBSOLETES="python-gv"
-python2_gv_CONTENTS="${PYTHON2_SITELIB#/} usr/share/man/man3/python-*"
-python3_gv_CATEGORY="Python"
-python3_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
-python3_gv_CONTENTS="${PYTHON3_SITELIB#/} usr/share/man/man3/python3-*"
+python27_gv_CATEGORY="Python"
+python27_gv_SUMMARY="GraphViz context library (Python bindings)"
+python27_gv_OBSOLETES="python-gv python2-gv"
+python27_gv_CONTENTS="usr/lib/python2.7/site-packages/* usr/share/man/man3/python27-*"
+python36_gv_CATEGORY="Python"
+python36_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
+python36_gv_OBSOLETES="python3-gv"
+python36_gv_CONTENTS="usr/lib/python3.6/site-packages/* usr/share/man/man3/python36-*"
+python37_gv_CATEGORY="Python"
+python37_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
+python37_gv_CONTENTS="usr/lib/python3.7/site-packages/* usr/share/man/man3/python37-*"
 ruby_gv_CATEGORY="Ruby"
 ruby_gv_SUMMARY="GraphViz context library (Ruby bindings)"
 ruby_gv_CONTENTS="${RUBY_VENDORARCH#/} usr/share/man/man3/ruby*"
@@ -112,8 +117,10 @@ CYGCONF_ARGS="
 	--disable-ocaml
 	--enable-perl
 	--enable-php
-	--enable-python
-	--enable-python3
+	--disable-python
+	--enable-python27
+	--enable-python36
+	--enable-python37
 	--disable-r
 	--enable-ruby
 	--disable-sharp
@@ -270,22 +277,15 @@ _EOF
 		php_postinst
 	fi
 
-	if inherited python2
-	then
-		_reset_dir ${PYTHON2_SITELIB}
-		mv python/cyggv_python.dll ${D}${PYTHON2_SITELIB}/_gv.dll
-		mv python/gv.py ${D}${PYTHON2_SITELIB}/
-		rm -fr python/
-	fi
-
-	if inherited python3
-	then
-		_reset_dir ${PYTHON3_SITELIB}
-		mv python3/cyggv_python3.dll ${D}${PYTHON3_SITELIB}/_gv.dll
-		mv python3/gv.py ${D}${PYTHON3_SITELIB}/
-		rm -fr python3/
-		newman ${S}/tclpkg/gv/gv.3python python3-gv.3
-	fi
+	for v in 2.7 3.6 3.7
+	do
+		_reset_dir /usr/lib/python$v/site-packages
+		mv python${v/.}/cyggv_python${v/.}.dll ${D}/usr/lib/python$v/site-packages/_gv.dll
+		mv python${v/.}/gv.py ${D}/usr/lib/python$v/site-packages/
+		rm -fr python${v/.}/
+		newman ${S}/tclpkg/gv/gv.3python python${v/.}-gv.3
+	done
+	rm ${D}/usr/share/man/man3/python-gv.3
 
 	if inherited ruby
 	then
