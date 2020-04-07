@@ -1,8 +1,8 @@
-inherit lua perl php ocaml ruby tcl # java mono
+inherit lua perl php ocaml qt5 ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.40.1
-RELEASE=4
+RELEASE=5
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -24,14 +24,16 @@ PATCH_URI="
 	2.40-doxygen-vpath.patch
 	2.40-no-undefined.patch
 	2.40-vmalloc.patch
+	2.40-gvedit-qt5.patch
 "
 
 gvlibdir="/usr/lib/${NAME}-${PV[1]}.${PV[2]}"
 gvpluginabi=6
 
+# guile-gv: need to accomodate parallel guile versions
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
            libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
-           guile-gv lua-gv ocaml-gv perl-gv php-gv
+           lua-gv ocaml-gv perl-gv php-gv
            python27-gv python36-gv python37-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
@@ -111,7 +113,7 @@ CYGCONF_ARGS="
 	--without-gtkgl
 	--without-gtkglext
 
-	--enable-guile
+	--disable-guile
 	--disable-java
 	--enable-lua
 	--disable-ocaml
