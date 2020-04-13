@@ -33,7 +33,7 @@ gvpluginabi=6
 # guile-gv: need to accomodate parallel guile versions
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
            libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
-           lua-gv ocaml-gv perl-gv php-gv
+           guile-gv lua-gv ocaml-gv perl-gv php-gv
            python27-gv python36-gv python37-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
@@ -65,7 +65,11 @@ libxdot4_CONTENTS="usr/bin/cygxdot-4.dll"
 # language bindings
 guile_gv_CATEGORY="Scheme"
 guile_gv_SUMMARY="GraphViz context library (Guile bindings)"
-guile_gv_CONTENTS="usr/lib/*gv_guile* usr/share/man/man3/guile*"
+guile_gv_CONTENTS="
+	usr/lib/guile/*/extensions/cyggv_guile.dll
+	usr/lib/guile/*/extensions/libgv_guile.la
+	usr/share/man/man3/guile*
+"
 java_gv_CATEGORY="Java"
 java_gv_SUMMARY="GraphViz context library (Java bindings)"
 java_gv_CONTENTS="usr/bin/*gv_java* ${JAVA_DIR#/} usr/share/man/man3/java*"
@@ -113,7 +117,7 @@ CYGCONF_ARGS="
 	--without-gtkgl
 	--without-gtkglext
 
-	--disable-guile
+	--enable-guile
 	--disable-java
 	--enable-lua
 	--disable-ocaml
@@ -130,7 +134,7 @@ CYGCONF_ARGS="
 "
 
 pkgdirargs="
-	pkgguiledir=/usr/lib
+	pkgguiledir=$(guile-config info extensiondir)
 	pkglibdir=${gvlibdir}
 	txtdir=/usr/share/doc/${NAME}
 	htmldir=/usr/share/doc/${NAME}/html
@@ -305,3 +309,5 @@ _EOF
 
 	popd
 }
+
+KEEP_LA_FILES="module"
