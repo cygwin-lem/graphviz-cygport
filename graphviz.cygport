@@ -1,8 +1,8 @@
 inherit lua perl php ocaml qt5 ruby tcl # java mono
 
 NAME="graphviz"
-VERSION=2.40.1
-RELEASE=5
+VERSION=2.46.1
+RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
 DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
@@ -10,21 +10,72 @@ simple text language, and make diagrams in several useful formats such as
 images and SVG for web pages, Postscript for inclusion in PDF or other
 documents; or display in an interactive graph browser."
 HOMEPAGE="http://www.graphviz.org/"
-SRC_URI="http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-${VERSION}.tar.gz"
+
+GIT_REPO="https://gitlab.com/graphviz/graphviz"
+declare -A GIT_DATEHASH_BY_NAME=(
+  # git log --date=iso-strict --format='%cd/%H' -1
+  [2.46.1]=2021-02-13T17:02:13+00:00/2.46.1
+  [2.46.0]=2021-01-18T17:47:31+00:00/2.46.0
+  [2.44.1]=2020-06-29T08:46:02+00:00/2.44.1
+  [2.44.0]=2020-04-08T09:50:01+02:00/2.44.0
+  [2.42.4]=2020-04-06T08:00:49+02:00/2.42.4
+  [2.42.3]=2019-10-10T13:50:48-04:00/2.42.3
+  [2.42.2]=2019-09-11T22:11:30-04:00/2.42.2
+)
+REV_HASH="${GIT_DATEHASH_BY_NAME[${VERSION}]#*/}"
+REV_DATE="${GIT_DATEHASH_BY_NAME[${VERSION}]%%/*}"
+REV_DATE_SHORT="${REV_DATE%%T*}"
+GIT_BASENAME="${GIT_REPO##*/}"
+SRC_URI="${GIT_REPO}/-/archive/${REV_HASH}/${NAME}-${REV_HASH}.tar.bz2" # GitLab
+SRC_DIR="${GIT_BASENAME}-${REV_HASH}"
+
 PATCH_URI="
-	https://src.fedoraproject.org/rpms/graphviz/raw/master/f/graphviz-2.40.1-visio.patch
-	2.40-bindings-guile.patch
-	2.40-bindings-perl.patch
-	2.40-bindings-php.patch
-	2.40-bindings-python2.patch
-	2.40-bindings-python3.patch
-	2.40-bindings-ruby.patch
-	2.40-bindings-tcl.patch
-	2.40-cygwin-unix.patch
 	2.40-doxygen-vpath.patch
 	2.40-no-undefined.patch
-	2.40-vmalloc.patch
-	2.40-gvedit-qt5.patch
+"
+#	2.40-bindings-guile.patch
+#	2.40-bindings-perl.patch
+#	2.40-bindings-php.patch
+#	2.40-bindings-python2.patch
+#	2.40-bindings-python3.patch
+#	2.40-bindings-ruby.patch
+#	2.40-bindings-tcl.patch
+#	2.40-cygwin-unix.patch
+#	2.40-vmalloc.patch
+#	2.40-gvedit-qt5.patch
+
+BUILD_REQUIRES="\
+  pkg-config\
+  gawk\
+  bison\
+  flex\
+  git\
+  perl\
+  doxygen\
+\
+  libcairo-devel\
+  libexpat-devel\
+  libgd-devel\
+  libtool\
+  libpango1.0-devel\
+  zlib-devel\
+\
+  libgts-devel\
+  libwebp-devel\
+\
+  libjpeg-devel\
+  libpng-devel\
+\
+  libguile3.0-devel\
+  lua-devel\
+  perl\
+  ocaml\
+  php-PEAR\
+  python36-devel\
+  python37-devel\
+  python38-devel\
+  ruby-devel\
+  tcl-devel\
 "
 
 gvlibdir="/usr/lib/${NAME}-${PV[1]}.${PV[2]}"
@@ -34,7 +85,7 @@ gvpluginabi=6
 PKG_NAMES="${NAME} ${NAME}-demo gvedit libgvc6 libgvc-devel
            libcdt5 libcgraph6 libgvpr2 liblab_gamut1 libpathplan4 libxdot4
            guile-gv lua-gv ocaml-gv perl-gv php-gv
-           python27-gv python36-gv python37-gv ruby-gv tcl-tcldot"
+           python36-gv python37-gv python38-gv ruby-gv tcl-tcldot"
 graphviz_CONTENTS="--exclude=demo --exclude=*.dll --exclude=gvedit* usr/bin/ usr/share/doc/
                    usr/share/${PN}/ usr/share/man/man1/ usr/share/man/man7/"
 graphviz_demo_SUMMARY="${SUMMARY} (sample scripts)"
@@ -88,10 +139,6 @@ perl_gv_CONTENTS="${PERL_VENDORARCH#/} usr/share/man/man3/perl*"
 php_gv_CATEGORY="PHP"
 php_gv_SUMMARY="GraphViz context library (PHP bindings)"
 php_gv_CONTENTS="${PHP_INI_DIR#/} ${PHP_EXTENSION_DIR#/} usr/share/man/man3/php* ${PHP_PEAR_DIR#/}"
-python27_gv_CATEGORY="Python"
-python27_gv_SUMMARY="GraphViz context library (Python bindings)"
-python27_gv_OBSOLETES="python-gv python2-gv"
-python27_gv_CONTENTS="usr/lib/python2.7/site-packages/* usr/share/man/man3/python27-*"
 python36_gv_CATEGORY="Python"
 python36_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
 python36_gv_OBSOLETES="python3-gv"
@@ -99,6 +146,9 @@ python36_gv_CONTENTS="usr/lib/python3.6/site-packages/* usr/share/man/man3/pytho
 python37_gv_CATEGORY="Python"
 python37_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
 python37_gv_CONTENTS="usr/lib/python3.7/site-packages/* usr/share/man/man3/python37-*"
+python38_gv_CATEGORY="Python"
+python38_gv_SUMMARY="GraphViz context library (Python 3 bindings)"
+python38_gv_CONTENTS="usr/lib/python3.8/site-packages/* usr/share/man/man3/python38-*"
 ruby_gv_CATEGORY="Ruby"
 ruby_gv_SUMMARY="GraphViz context library (Ruby bindings)"
 ruby_gv_CONTENTS="${RUBY_VENDORARCH#/} usr/share/man/man3/ruby*"
@@ -124,9 +174,10 @@ CYGCONF_ARGS="
 	--enable-perl
 	--enable-php
 	--disable-python
-	--enable-python27
+	--disable-python27
 	--enable-python36
 	--enable-python37
+	--enable-python38
 	--disable-r
 	--enable-ruby
 	--disable-sharp
@@ -283,7 +334,7 @@ _EOF
 		php_postinst
 	fi
 
-	for v in 2.7 3.6 3.7
+	for v in 3.6 3.7 3.8
 	do
 		_reset_dir /usr/lib/python$v/site-packages
 		mv python${v/.}/cyggv_python${v/.}.dll ${D}/usr/lib/python$v/site-packages/_gv.dll
