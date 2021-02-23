@@ -1,3 +1,71 @@
+################################################################
+__str_version_cyg() {
+  # Remove a period from a string "x.y" when both x and y are single-digit.
+  printf '%s' "$1" | sed -E 's/^([[:digit:]])\.([[:digit:]])$/\1\2/'
+}
+
+################################################################
+__current_pkg() {
+  THIS_PN="$1"
+}
+
+__add_pkg() {
+  THIS_PN="$1"
+  PKG_NAMES+=" ${THIS_PN}"
+}
+
+__set_pkg_property() {
+  local LOCAL_PN="$1"
+  if [ -z "${LOCAL_PN//[-+\._]/}" ]; then
+    LOCAL_PN="${THIS_PN}"
+  fi
+  local LOCAL_VN="${LOCAL_PN//[-+\.]/_}"
+  printf -v "${LOCAL_VN}_$2" "%s" "$3"
+}
+
+__append_pkg_property() {
+  local LOCAL_PN="$1"
+  if [ -z "${LOCAL_PN//[-+\._]/}" ]; then
+    LOCAL_PN="${THIS_PN}"
+  fi
+  local LOCAL_VN="${LOCAL_PN//[-+\.]/_}"
+  local LOCAL_VN_PROPERTY="${LOCAL_VN}_$2"
+  printf -v "${LOCAL_VN_PROPERTY}" "%s" "${!LOCAL_VN_PROPERTY}$3"
+}
+
+################################################################
+cpdirs() {
+  tar -C "$1" -cf - . | tar -C "$2" -xpf -
+}
+
+################################################################
+__doinsdir () {
+  local src="$1"
+  local dst="$2"
+  local f
+  [ -d "${src}" ] || error "__doinsdir ${src} failed: not a directory"
+  pushd "${src}"
+  for f in $(find . -type d); do
+    insinto "${dst}/$f"
+    doins $(find "$f" -maxdepth 1 -not -type d)
+  done
+  popd
+}
+
+__dodocdir () {
+  local src="$1"
+  local dst="$2"
+  local f
+  [ -d "${src}" ] || error "__dodocdir ${src} failed: not a directory"
+  pushd "${src}"
+  for f in $(find . -type d); do
+    docinto "${dst}/$f"
+    dodoc $(find "$f" -maxdepth 1 -not -type d)
+  done
+  popd
+}
+
+################################################################
 inherit lua perl php ocaml qt5 ruby tcl # java mono
 
 NAME="graphviz"
@@ -29,6 +97,8 @@ GIT_BASENAME="${GIT_REPO##*/}"
 SRC_URI="${GIT_REPO}/-/archive/${REV_HASH}/${NAME}-${REV_HASH}.tar.bz2" # GitLab
 SRC_DIR="${GIT_BASENAME}-${REV_HASH}"
 
+SRC_URI+=" ${VERSION}-version.m4"
+
 PATCH_URI="
 	2.40-doxygen-vpath.patch
 	2.40-no-undefined.patch
@@ -52,6 +122,23 @@ BUILD_REQUIRES="\
   git\
   perl\
   doxygen\
+  fontconfig\
+  libfontconfig-devel\
+  libX11-devel\
+  libXt-devel\
+  libXmu-devel\
+  libXaw-devel\
+  libfreetype-devel\
+  libgs-devel\
+  libgts-devel\
+  libglib2.0-devel\
+  libQt5Core-devel\
+  libQt5Gui-devel\
+  libgdk_pixbuf2.0-devel\
+  libglut-devel\
+  libglade2.0-devel\
+  libgtkglext1.0-devel\
+  libLASi-devel\
 \
   libcairo-devel\
   libexpat-devel\
@@ -59,6 +146,8 @@ BUILD_REQUIRES="\
   libtool\
   libpango1.0-devel\
   zlib-devel\
+  librsvg2-devel\
+  libvisio0.1-devel\
 \
   libgts-devel\
   libwebp-devel\
@@ -66,6 +155,7 @@ BUILD_REQUIRES="\
   libjpeg-devel\
   libpng-devel\
 \
+  guile3.0\
   libguile3.0-devel\
   lua-devel\
   perl\
@@ -195,15 +285,21 @@ pkgdirargs="
 
 src_compile() {
 	cd ${S}
-	cygautoreconf
-	cd ${B}
-	cygconf # CYGCONF_ARGS defined above
-	# not VPATH safe
-	lndirs ${S}/cmd/gvedit ${B}/cmd/gvedit
 
-	cygmake ${pkgdirargs} LDFLAGS='-no-undefined'
+	inform "autogen"
+	./autogen.sh
+	cp ${VERSION}-version.m4 version.m4
+	cd ${B}
+	lndirs
+
+	inform "cygconf"
+	./configure --prefix=/usr ${CYGCONF_ARGS}
+
+	inform "cygmake"
+	cygmake ${pkgdirargs} CC=${CC} LD=${LD} LDFLAGS='-no-undefined'
 
 	cd ${B}/tclpkg/gv
+	inform "gv"
 
 	if inherited java
 	then
@@ -225,6 +321,7 @@ src_compile() {
 
 	if inherited ocaml
 	then
+		inform "gv ocaml"
 		make libgv_ocaml.la gv.a
 		ocamlmklib -v -o gv .libs/libgv_ocaml_la-gv*.o -L${B}/lib/gvc/.libs -L${B}/lib/cgraph/.libs -L${B}/lib/cdt/.libs -lgvc -lcgraph -lcdt -lstdc++
 		ocamlc -a -dllib gv.so -o gv.cma swig.cmo gv.cmo
