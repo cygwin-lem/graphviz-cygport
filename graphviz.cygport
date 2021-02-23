@@ -9,7 +9,7 @@ DESCRIPTION="The Graphviz layout programs take descriptions of graphs in a
 simple text language, and make diagrams in several useful formats such as
 images and SVG for web pages, Postscript for inclusion in PDF or other
 documents; or display in an interactive graph browser."
-HOMEPAGE="http://www.graphviz.org/"
+HOMEPAGE="https://www.graphviz.org/"
 
 GIT_REPO="https://gitlab.com/graphviz/graphviz"
 declare -A GIT_DATEHASH_BY_NAME=(
