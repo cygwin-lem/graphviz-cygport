@@ -1,6 +1,6 @@
---- origsrc/graphviz-2.40.1/cmd/tools/Makefile.am	2016-12-20 08:32:22.000000000 -0600
-+++ src/graphviz-2.40.1/cmd/tools/Makefile.am	2017-03-06 01:28:01.526707900 -0600
-@@ -153,11 +153,12 @@ gvpack_SOURCES = gvpack.c
+--- origsrc/graphviz-2.47.0/cmd/tools/Makefile.am	2021-03-16 09:04:01.000000000 +0900
++++ src/graphviz-2.47.0/cmd/tools/Makefile.am
+@@ -244,11 +244,12 @@
  gvpack_CPPFLAGS = $(AM_CPPFLAGS) -DDEMAND_LOADING=0
  
  gvpack_LDADD = \
@@ -13,11 +13,11 @@
 -	$(top_builddir)/plugin/neato_layout/libgvplugin_neato_layout.la
 +	$(GTS_LIBS)
  
- if ENABLE_STATIC
- gvpack_static_SOURCES = gvpack.c
---- origsrc/graphviz-2.40.1/plugin/gtk/Makefile.am	2016-08-09 16:02:10.000000000 -0500
-+++ src/graphviz-2.40.1/plugin/gtk/Makefile.am	2017-03-06 12:17:16.552948100 -0600
-@@ -31,7 +31,7 @@ libgvplugin_gtk_C_la_SOURCES = \
+ # add a non-existent C++ source to force the C++ compiler to be used for
+ # linking, so the C++ standard library is included for our C++ dependencies
+--- origsrc/graphviz-2.47.0/plugin/gtk/Makefile.am	2021-03-16 09:04:01.000000000 +0900
++++ src/graphviz-2.47.0/plugin/gtk/Makefile.am
+@@ -30,7 +30,7 @@
  
  libgvplugin_gtk_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
  libgvplugin_gtk_la_SOURCES = $(libgvplugin_gtk_C_la_SOURCES)
