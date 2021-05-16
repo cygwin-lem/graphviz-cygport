@@ -69,7 +69,7 @@ __dodocdir () {
 inherit lua perl php ocaml qt5 ruby tcl # java mono
 
 NAME="graphviz"
-VERSION=2.47.0
+VERSION=2.47.1
 RELEASE=1
 CATEGORY="Graphics"
 SUMMARY="Graph visualization tools"
@@ -82,6 +82,7 @@ HOMEPAGE="https://www.graphviz.org/"
 GIT_REPO="https://gitlab.com/graphviz/graphviz"
 declare -A GIT_DATEHASH_BY_NAME=(
   # git log --date=iso-strict --format='%cd/%H' -1
+  [2.47.1]=2021-04-17T19:19:13+00:00/2.47.1
   [2.47.0]=2021-03-16T00:04:01+00:00/2.47.0
   [2.46.1]=2021-02-13T17:02:13+00:00/2.46.1
   [2.46.0]=2021-01-18T17:47:31+00:00/2.46.0
@@ -104,6 +105,7 @@ PATCH_URI="
 	2.47.0-doxygen-vpath.patch
 	2.47.0-cygwin-unix.patch
 	2.47.0-no-undefined.patch
+	2.47.1-configure-ac.patch
 "
 #	2.40-bindings-guile.patch
 #	2.40-bindings-perl.patch
@@ -158,7 +160,7 @@ BUILD_REQUIRES="\
 \
   guile3.0\
   libguile3.0-devel\
-  lua-devel\
+  liblua-devel\
   perl\
   ocaml\
   php-PEAR\
@@ -297,7 +299,7 @@ src_compile() {
 	./configure --prefix=/usr ${CYGCONF_ARGS}
 
 	inform "cygmake"
-	cygmake ${pkgdirargs} CC=${CC} LD=${LD} LDFLAGS='-no-undefined'
+	cygmake ${pkgdirargs} CC=${CC} LD=${LD} LDFLAGS='-no-undefined' VISIO_CFLAGS='-std=gnu++11'
 
 	cd ${B}/tclpkg/gv
 	inform "gv"
