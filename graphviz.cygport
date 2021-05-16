@@ -105,7 +105,7 @@ PATCH_URI="
 	2.47.0-doxygen-vpath.patch
 	2.47.0-cygwin-unix.patch
 	2.47.0-no-undefined.patch
-	2.47.1-configure-ac.patch
+	2.47.1-cygwin-webp.patch
 "
 #	2.40-bindings-guile.patch
 #	2.40-bindings-perl.patch

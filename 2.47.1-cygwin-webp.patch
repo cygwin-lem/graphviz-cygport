@@ -1,0 +1,14 @@
+diff -u -r origsrc/graphviz-2.47.1/plugin/webp/Makefile.am src/graphviz-2.47.1/plugin/webp/Makefile.am
+--- origsrc/graphviz-2.47.1/plugin/webp/Makefile.am	2021-04-18 04:19:13.000000000 +0900
++++ src/graphviz-2.47.1/plugin/webp/Makefile.am
+@@ -25,7 +25,9 @@
+ 
+ libgvplugin_webp_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
+ libgvplugin_webp_la_SOURCES = $(libgvplugin_webp_C_la_SOURCES)
+-libgvplugin_webp_la_LIBADD = @WEBP_LIBS@ @PANGOCAIRO_LIBS@
++libgvplugin_webp_la_LIBADD = \
++	@WEBP_LIBS@ @PANGOCAIRO_LIBS@ \
++	$(top_builddir)/lib/gvc/libgvc.la
+ 
+ if WITH_WIN32
+ libgvplugin_webp_la_LDFLAGS += -no-undefined
