@@ -1,0 +1,357 @@
+diff --git a/lib/ast/CMakeLists.txt b/lib/ast/CMakeLists.txt
+index bd877d165..6c1ecc421 100644
+--- a/lib/ast/CMakeLists.txt
++++ b/lib/ast/CMakeLists.txt
+@@ -26,3 +26,7 @@ add_library(ast STATIC
+ target_include_directories(ast PRIVATE
+     ${GRAPHVIZ_LIB_DIR}
+ )
++
++if(CYGWIN)
++    target_link_options(ast PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/cdt/CMakeLists.txt b/lib/cdt/CMakeLists.txt
+index 159f9864a..3d80cf8eb 100644
+--- a/lib/cdt/CMakeLists.txt
++++ b/lib/cdt/CMakeLists.txt
+@@ -53,3 +53,7 @@ set_target_properties(cdt PROPERTIES
+     VERSION 5.0.0
+     SOVERSION 5
+ )
++
++if(CYGWIN)
++    target_link_options(cdt PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/cgraph/CMakeLists.txt b/lib/cgraph/CMakeLists.txt
+index f52e93d9a..ff1f40a5f 100644
+--- a/lib/cgraph/CMakeLists.txt
++++ b/lib/cgraph/CMakeLists.txt
+@@ -73,3 +73,7 @@ set_target_properties(cgraph PROPERTIES
+     VERSION 6.0.0
+     SOVERSION 6
+ )
++
++if(CYGWIN)
++    target_link_options(cgraph PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/circogen/CMakeLists.txt b/lib/circogen/CMakeLists.txt
+index 6f7d45500..775a93030 100644
+--- a/lib/circogen/CMakeLists.txt
++++ b/lib/circogen/CMakeLists.txt
+@@ -32,3 +32,7 @@ target_include_directories(circogen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/gvc
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan)
++
++if(CYGWIN)
++    target_link_options(circogen PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/common/CMakeLists.txt b/lib/common/CMakeLists.txt
+index de233fd8b..4141ea7b3 100644
+--- a/lib/common/CMakeLists.txt
++++ b/lib/common/CMakeLists.txt
+@@ -125,3 +125,7 @@ install(
+         usershape.h
+     DESTINATION ${HEADER_INSTALL_DIR}
+ )
++
++if(CYGWIN)
++    target_link_options(common_obj PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/dotgen/CMakeLists.txt b/lib/dotgen/CMakeLists.txt
+index 150fe588b..32e8f9133 100644
+--- a/lib/dotgen/CMakeLists.txt
++++ b/lib/dotgen/CMakeLists.txt
+@@ -32,3 +32,7 @@ target_include_directories(dotgen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(dotgen PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/expr/CMakeLists.txt b/lib/expr/CMakeLists.txt
+index b11c6ea0c..a0bdc3bf0 100644
+--- a/lib/expr/CMakeLists.txt
++++ b/lib/expr/CMakeLists.txt
+@@ -67,3 +67,7 @@ target_include_directories(expr PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/sfio
+     ${GRAPHVIZ_LIB_DIR}/cdt
+ )
++
++if(CYGWIN)
++    target_link_options(expr PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/fdpgen/CMakeLists.txt b/lib/fdpgen/CMakeLists.txt
+index 4f3290e1c..0d2450c21 100644
+--- a/lib/fdpgen/CMakeLists.txt
++++ b/lib/fdpgen/CMakeLists.txt
+@@ -28,3 +28,7 @@ target_include_directories(fdpgen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(fdpgen PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/gvc/CMakeLists.txt b/lib/gvc/CMakeLists.txt
+index da70b122c..231563477 100644
+--- a/lib/gvc/CMakeLists.txt
++++ b/lib/gvc/CMakeLists.txt
+@@ -118,3 +118,7 @@ if (WIN32)
+         DESTINATION ${BINARY_INSTALL_DIR}
+     )
+ endif()
++
++if(CYGWIN)
++    target_link_options(gvc PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/gvpr/CMakeLists.txt b/lib/gvpr/CMakeLists.txt
+index 0796c86ef..7e686d9d4 100644
+--- a/lib/gvpr/CMakeLists.txt
++++ b/lib/gvpr/CMakeLists.txt
+@@ -62,3 +62,7 @@ target_link_libraries(gvpr
+ if(NOT HAVE_GETOPT_H)
+     target_link_libraries(gvpr ${Getopt_LINK_LIBRARIES})
+ endif(NOT HAVE_GETOPT_H)
++
++if(CYGWIN)
++    target_link_options(gvpr PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/ingraphs/CMakeLists.txt b/lib/ingraphs/CMakeLists.txt
+index 47744ceb1..37adbe6a1 100644
+--- a/lib/ingraphs/CMakeLists.txt
++++ b/lib/ingraphs/CMakeLists.txt
+@@ -11,3 +11,8 @@ target_include_directories(ingraphs PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/cdt
+     ${GRAPHVIZ_LIB_DIR}/cgraph
+ )
++
++if(CYGWIN)
++    target_link_libraries(ingraphs INTERFACE cgraph)
++    target_link_options(ingraphs PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/label/CMakeLists.txt b/lib/label/CMakeLists.txt
+index 8654030db..8e1e69be7 100644
+--- a/lib/label/CMakeLists.txt
++++ b/lib/label/CMakeLists.txt
+@@ -20,3 +20,7 @@ target_include_directories(label PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/cgraph
+     ${GRAPHVIZ_LIB_DIR}/common
+ )
++
++if(CYGWIN)
++    target_link_options(label PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/mingle/CMakeLists.txt b/lib/mingle/CMakeLists.txt
+index dee71d609..6c9216a2b 100644
+--- a/lib/mingle/CMakeLists.txt
++++ b/lib/mingle/CMakeLists.txt
+@@ -26,4 +26,8 @@ target_include_directories(libmingle PRIVATE
+     ${ANN_INCLUDE_DIR}
+ )
+ 
++if(CYGWIN)
++    target_link_options(libmingle PRIVATE -Wl,--export-all-symbols)
++endif()
++
+ endif (ANN_FOUND)
+diff --git a/lib/neatogen/CMakeLists.txt b/lib/neatogen/CMakeLists.txt
+index 412b71d10..3d7fc5c5d 100644
+--- a/lib/neatogen/CMakeLists.txt
++++ b/lib/neatogen/CMakeLists.txt
+@@ -100,3 +100,7 @@ target_include_directories(neatogen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(neatogen PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/ortho/CMakeLists.txt b/lib/ortho/CMakeLists.txt
+index 14d7a15d4..210d2c2ef 100644
+--- a/lib/ortho/CMakeLists.txt
++++ b/lib/ortho/CMakeLists.txt
+@@ -33,4 +33,9 @@ target_include_directories(ortho PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
+ 
++if(CYGWIN)
++    target_link_libraries(ortho INTERFACE cdt cgraph common_obj gvc pack_obj pathplan)
++    target_link_options(ortho PRIVATE -Wl,--export-all-symbols)
++endif()
++
+ endif (with_ortho)
+diff --git a/lib/osage/CMakeLists.txt b/lib/osage/CMakeLists.txt
+index 78405eb20..28d33e37c 100644
+--- a/lib/osage/CMakeLists.txt
++++ b/lib/osage/CMakeLists.txt
+@@ -15,3 +15,7 @@ target_include_directories(osage PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(osage PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/pack/CMakeLists.txt b/lib/pack/CMakeLists.txt
+index 73f99d0a7..6352ba3fb 100644
+--- a/lib/pack/CMakeLists.txt
++++ b/lib/pack/CMakeLists.txt
+@@ -34,3 +34,7 @@ install(
+     FILES pack.3
+     DESTINATION ${MAN_INSTALL_DIR}
+ )
++
++if(CYGWIN)
++    target_link_options(pack_obj PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/patchwork/CMakeLists.txt b/lib/patchwork/CMakeLists.txt
+index 0ef621f0e..cac43070c 100644
+--- a/lib/patchwork/CMakeLists.txt
++++ b/lib/patchwork/CMakeLists.txt
+@@ -18,3 +18,7 @@ target_include_directories(patchwork PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(patchwork PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/pathplan/CMakeLists.txt b/lib/pathplan/CMakeLists.txt
+index 552d6243b..ef6c9fed9 100644
+--- a/lib/pathplan/CMakeLists.txt
++++ b/lib/pathplan/CMakeLists.txt
+@@ -59,3 +59,7 @@ target_link_libraries(
+     pathplan
+     ${MATH_LIB}
+ )
++
++if(CYGWIN)
++    target_link_options(pathplan PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/rbtree/CMakeLists.txt b/lib/rbtree/CMakeLists.txt
+index 44d20883f..9a5d3850d 100644
+--- a/lib/rbtree/CMakeLists.txt
++++ b/lib/rbtree/CMakeLists.txt
+@@ -12,3 +12,7 @@ add_library(rbtree STATIC
+ include_directories(rbtree PRIVATE
+     ${GRAPHVIZ_LIB_DIR}
+ )
++
++if(CYGWIN)
++    target_link_options(rbtree PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/sfdpgen/CMakeLists.txt b/lib/sfdpgen/CMakeLists.txt
+index 579e03452..1eb4c9f75 100644
+--- a/lib/sfdpgen/CMakeLists.txt
++++ b/lib/sfdpgen/CMakeLists.txt
+@@ -33,4 +33,11 @@ target_include_directories(sfdpgen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
+ 
++if(CYGWIN)
++    target_link_libraries(sfdpgen INTERFACE
++      cdt cgraph common_obj gvc pack_obj pathplan
++      sparse neatogen)
++    target_link_options(sfdpgen PRIVATE -Wl,--export-all-symbols)
++endif()
++
+ endif (with_sfdp)
+diff --git a/lib/sfio/CMakeLists.txt b/lib/sfio/CMakeLists.txt
+index b91647f7f..25decc163 100644
+--- a/lib/sfio/CMakeLists.txt
++++ b/lib/sfio/CMakeLists.txt
+@@ -44,3 +44,6 @@ target_include_directories(sfio PRIVATE
+     ${GRAPHVIZ_LIB_DIR}
+ )
+ 
++if(CYGWIN)
++    target_link_options(sfio PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/sparse/CMakeLists.txt b/lib/sparse/CMakeLists.txt
+index 34f15d76b..74fc2c90b 100644
+--- a/lib/sparse/CMakeLists.txt
++++ b/lib/sparse/CMakeLists.txt
+@@ -38,3 +38,7 @@ target_include_directories(sparse PRIVATE
+ target_link_libraries(sparse
+     ${MATH_LIB}
+ )
++
++if(CYGWIN)
++    target_link_options(sparse PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/spine/CMakeLists.txt b/lib/spine/CMakeLists.txt
+index 75b949fe5..7e5de586e 100644
+--- a/lib/spine/CMakeLists.txt
++++ b/lib/spine/CMakeLists.txt
+@@ -18,3 +18,7 @@ target_include_directories(spine PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/cdt
+     ${GRAPHVIZ_LIB_DIR}/cgraph
+ )
++
++if(CYGWIN)
++    target_link_options(spine PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/topfish/CMakeLists.txt b/lib/topfish/CMakeLists.txt
+index 8cd0fc9d2..66fc99dbc 100644
+--- a/lib/topfish/CMakeLists.txt
++++ b/lib/topfish/CMakeLists.txt
+@@ -14,4 +14,8 @@ target_include_directories(topfish PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/common
+ )
+ 
++if(CYGWIN)
++    target_link_options(topfish PRIVATE -Wl,--export-all-symbols)
++endif()
++
+ endif (with_smyrna)
+diff --git a/lib/twopigen/CMakeLists.txt b/lib/twopigen/CMakeLists.txt
+index 9b80265a5..051ac0a47 100644
+--- a/lib/twopigen/CMakeLists.txt
++++ b/lib/twopigen/CMakeLists.txt
+@@ -16,3 +16,7 @@ target_include_directories(twopigen PRIVATE
+     ${GRAPHVIZ_LIB_DIR}/pack
+     ${GRAPHVIZ_LIB_DIR}/pathplan
+ )
++
++if(CYGWIN)
++    target_link_options(twopigen PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/vmalloc/CMakeLists.txt b/lib/vmalloc/CMakeLists.txt
+index 917c3642b..93bfbcd39 100644
+--- a/lib/vmalloc/CMakeLists.txt
++++ b/lib/vmalloc/CMakeLists.txt
+@@ -14,3 +14,7 @@ add_library(vmalloc STATIC
+ target_include_directories(vmalloc PRIVATE
+     ${GRAPHVIZ_LIB_DIR}
+ )
++
++if(CYGWIN)
++    target_link_options(vmalloc PRIVATE -Wl,--export-all-symbols)
++endif()
+diff --git a/lib/vpsc/CMakeLists.txt b/lib/vpsc/CMakeLists.txt
+index 5cdea446a..69a8d3120 100644
+--- a/lib/vpsc/CMakeLists.txt
++++ b/lib/vpsc/CMakeLists.txt
+@@ -28,4 +28,8 @@ target_include_directories(vpsc PRIVATE
+     ${GRAPHVIZ_LIB_DIR}
+ )
+ 
++if(CYGWIN)
++    target_link_options(vpsc PRIVATE -Wl,--export-all-symbols)
++endif()
++
+ endif (with_ipsepcola)
+diff --git a/lib/xdot/CMakeLists.txt b/lib/xdot/CMakeLists.txt
+index afd07939f..be607df15 100644
+--- a/lib/xdot/CMakeLists.txt
++++ b/lib/xdot/CMakeLists.txt
+@@ -38,3 +38,7 @@ set_target_properties(xdot PROPERTIES
+     VERSION 4.0.0
+     SOVERSION 4
+ )
++
++if(CYGWIN)
++    target_link_options(xdot PRIVATE -Wl,--export-all-symbols)
++endif()
