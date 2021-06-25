@@ -66,7 +66,7 @@ __dodocdir () {
 }
 
 ################################################################
-inherit lua perl php ocaml qt5 ruby tcl # java mono
+inherit cmake lua perl php ocaml qt5 ruby tcl # java mono
 
 NAME="graphviz"
 VERSION=2.47.3
@@ -104,6 +104,7 @@ SRC_DIR="${GIT_BASENAME}-${REV_HASH}"
 SRC_URI+=" ${VERSION}-version.m4"
 
 PATCH_URI="
+	2.47.3-cmakelists-cygwin.patch
 	2.47.0-doxygen-vpath.patch
 	2.47.0-cygwin-unix.patch
 	2.47.0-no-undefined.patch
@@ -289,6 +290,17 @@ pkgdirargs="
 "
 
 src_compile() {
+  cd ${B}
+  : ${CYGCMAKE_GENERATOR=Ninja}
+  cygcmake -GNinja
+  if [ -f build.ninja ]
+  then
+    cygninja
+  else
+    cygmake
+  fi
+  return
+
 	cd ${S}
 
 	inform "autogen"
@@ -344,6 +356,15 @@ _reset_dir() {
 }
 
 src_install() {
+  cd ${B}
+  if [ -f build.ninja ]
+  then
+    ninja_install
+  else
+    cyginstall
+  fi
+  return
+
 	cd ${B}
 	cyginstall ${pkgdirargs}
 
